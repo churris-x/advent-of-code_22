@@ -23,15 +23,22 @@ const findHighestCalorie = inventory => inventory
 	.map(elf => countCal(elf.split('\r\n')))
 	.reduce((highest, current) => highest > current ? highest : current, 0);
 
+const findTopThreeSum = inventory => inventory
+	.split('\r\n\r\n')
+	.map(elf => countCal(elf.split('\r\n')))
+	.sort((a, b) => b - a)
+	.slice(0,3)
+	.reduce((sum, next) => sum + next);
 
- console.log(findHighestCalorie(totalInventory));
+console.log(findHighestCalorie(totalInventory));
+console.log(findTopThreeSum(totalInventory));
 
 
-
-/* Part 1
+/*
 Wrong guesses:
 	12446004
 
 Correct:
-	69795
+	1) 69795
+	2) 208437
 */
