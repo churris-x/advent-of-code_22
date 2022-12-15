@@ -1,2 +1,2 @@
 # advent-of-code_22
-Solutions to each puzzel
+Solutions to each puzzle
