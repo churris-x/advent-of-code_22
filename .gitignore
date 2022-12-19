@@ -1,4 +1,4 @@
-# npm
+ # npm
 node_modules/
 
 # mac folder
@@ -6,3 +6,6 @@ node_modules/
 
 # dot env
 .env
+
+# input files
+**/input.txt
