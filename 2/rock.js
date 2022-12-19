@@ -33,6 +33,33 @@ const sumScores = rounds => rounds
 console.log(sumScores(eg));
 console.log(sumScores(input));
 
+// Part 2
+
+const resultToScore = {
+	X: 0,
+	Y: 3,
+	Z: 6,
+};
+
+const scoreRound2 = (e, p) => {
+	const target = resultToScore[p];
+	let symbol = 0;
+
+	if (minusScore[ 1 - symbolValue[e]] === target) symbol = 1
+	if (minusScore[ 2 - symbolValue[e]] === target) symbol = 2
+	if (minusScore[ 3 - symbolValue[e]] === target) symbol = 3
+
+	return target + symbol;
+};
+
+const sumScores2 = rounds => rounds
+	.split('\n')
+	.slice(0, -1)
+	.reduce((sum, round) => sum + scoreRound2(...round.split(' ')), 0)
+
+console.log(sumScores2(eg));
+console.log(sumScores2(input));
+
 
 /*
 Wrong guesses:
@@ -40,4 +67,5 @@ Wrong guesses:
 
 Correct:
 	1) 10941
+	2) 13071
 */
