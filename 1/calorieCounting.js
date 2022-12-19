@@ -1,5 +1,5 @@
-const elves = require('./input.json');
-const totalInventory = JSON.parse(JSON.stringify(elves.totalInventory));
+const fs = require('fs');
+const elves = fs.readFileSync('./input.txt').toString();
 
 const egInventory = `1000
 2000
@@ -19,20 +19,20 @@ const egInventory = `1000
 const countCal = elf => elf.reduce((sum, food) => Number(food) + sum ,0);
 
 const findHighestCalorie = inventory => inventory
-	.split('\r\n\r\n')
-	.map(elf => countCal(elf.split('\r\n')))
+	.split('\n\n')
+	.map(elf => countCal(elf.split('\n')))
 	.reduce((highest, current) => highest > current ? highest : current, 0);
 
 const findTopThreeSum = inventory => inventory
-	.split('\r\n\r\n')
-	.map(elf => countCal(elf.split('\r\n')))
+	.split('\n\n')
+	.map(elf => countCal(elf.split('\n')))
 	.sort((a, b) => b - a)
 	.slice(0,3)
 	.reduce((sum, next) => sum + next);
 
-console.log(findHighestCalorie(totalInventory));
-console.log(findTopThreeSum(totalInventory));
-
+ console.log(findHighestCalorie(egInventory));
+  console.log(findHighestCalorie(elves));
+  console.log(findTopThreeSum(elves));
 
 /*
 Wrong guesses:

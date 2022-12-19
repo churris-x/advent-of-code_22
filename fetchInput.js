@@ -35,10 +35,6 @@ if (inputDay && !isNaN(inputDay)) {
 	})();
 }
 
-// const date = new Date();
-// const currentDay = {
-date.getDate(),
-
 module.exports = {
 	getInputByDay,
 };
