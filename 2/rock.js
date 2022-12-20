@@ -1,10 +1,9 @@
 const fs = require('fs');
-const input = fs.readFileSync('./input.txt').toString();
+const input = fs.readFileSync('./input.txt').toString().slice(0, -1);
 
 const eg = `A Y
 B X
-C Z
-`;
+C Z`;
 
 const symbolValue = {
 	A: 1,
@@ -27,7 +26,6 @@ const scoreRound = (e, p) => minusScore[symbolValue[p] - symbolValue[e]] + symbo
 
 const sumScores = rounds => rounds
 	.split('\n')
-	.slice(0, -1)
 	.reduce((sum, round) => sum + scoreRound(...round.split(' ')), 0)
 
 console.log(sumScores(eg));
@@ -54,7 +52,6 @@ const scoreRound2 = (e, p) => {
 
 const sumScores2 = rounds => rounds
 	.split('\n')
-	.slice(0, -1)
 	.reduce((sum, round) => sum + scoreRound2(...round.split(' ')), 0)
 
 console.log(sumScores2(eg));
