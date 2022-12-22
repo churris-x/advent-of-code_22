@@ -4,10 +4,12 @@ const fs = require('fs');
 const { AUTH_TOKEN } = process.env;
 
 // TODO(Fran): check if no day use Date.getDate();
+// TODO(Fran): add year param? new Date('1/1/21').getFullYear() to allow 2 digit
 
-const getInputByDay = async day => {
-	if (!day) throw `Function getInputByDay needs a day, got instead: ${day}`;
-	if (day < 0) throw 'Function getInputByDay: day needs to be a positive number';
+const getInputByDay = async (day) => {
+	if (!AUTH_TOKEN) throw 'Function getInputByDay is missing AUTH_TOKEN';
+	if (!day || isNaN(day)) throw `Function getInputByDay needs a day number, got instead: ${day}`;
+	if (day < 1 || day > 25) throw 'Function getInputByDay: invalid day, needs to be between 1-25';
 
 	const url = `https://adventofcode.com/2022/day/${day}/input`;
 	const response = await fetch(url, {
@@ -21,16 +23,16 @@ const getInputByDay = async day => {
 
 
 // Fetches and saves input to a file when this file is called
-const inputDay = process.argv[2];
+const day = process.argv[2];
 
-if (inputDay && !isNaN(inputDay)) {
+if (day) {
 	(async () => {
-		const input = await getInputByDay(inputDay);
+		const input = await getInputByDay(day);
 		
 		// TODO(Fran): check if folder already exists, if not create it
-		await fs.writeFile(`${inputDay}/input.txt`, input, error => { 
+		await fs.writeFile(`${day}/input.txt`, input, error => { 
 			if (error) throw error;
-			console.log(`Input for day ${inputDay} wrote successfuly.`);
+			console.log(`Input for day ${day} wrote successfuly.`);
 		});
 	})();
 }
