@@ -21,18 +21,18 @@ const getInputByDay = async day => {
 
 
 // Fetches and saves input to a file when this file is called
-const inputDay = process.argv[2];
+const inputDays = process.argv.slice(2);
 
-if (inputDay && !isNaN(inputDay)) {
-	(async () => {
-		const input = await getInputByDay(inputDay);
-		
+if (inputDays.length) {
+	inputDays.forEach(async day => {
+		const input = await getInputByDay(day);
+
 		// TODO(Fran): check if folder already exists, if not create it
-		fs.writeFile(`${inputDay}/input.txt`, input, error => { 
+		await fs.writeFile(`${day}/input.txt`, input, error => { 
 			if (error) throw error;
-			console.log(`Input for day ${inputDay} wrote successfuly.`);
+			console.log(`Input for day ${day} wrote successfuly.`);
 		});
-	})();
+	})
 }
 
 module.exports = {
