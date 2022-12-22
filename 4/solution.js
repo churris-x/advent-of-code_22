@@ -14,6 +14,20 @@ const totalContains = pairs => pairs
 console.log(totalContains(eg));
 console.log(totalContains(input));
 
+// ----------------------------------------------------------------------------
+
+const bOverlapsA = ([lowerA, upperA], [lowerB, upperB]) => (upperA >= lowerB && upperB >= lowerA);
+
+const totalOverlaps = pairs => pairs
+	.split('\n')
+	.map(pair => pair.split(',')
+		.map(range => range.split('-')
+			.map(i => Number(i))))
+	.reduce((sum, [a, b]) => bOverlapsA(a, b) ? sum + 1 : sum, 0);
+
+console.log(totalOverlaps(eg));
+console.log(totalOverlaps(input));
+
 /*
 Wrong guesses:
 	663 too high
@@ -24,5 +38,5 @@ Wrong guesses:
 
 Correct:
 	1) 651
-	2) 
+	2) 956
 */
