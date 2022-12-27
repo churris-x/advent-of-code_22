@@ -16,8 +16,8 @@ const getColumns = crates => crates
 	, [])
 	.map(column => column.filter( crate => !!crate.trim()))
 
-const moveCrates = (columns, ammount, from, to) => {
-	for (let i = 0; i < ammount; i++) {	
+const moveCrates = (columns, amount, from, to) => {
+	for (let i = 0; i < amount; i++) {	
 		const crate = columns[from -1].pop()
 		columns[to -1].push(crate);
 	}
@@ -30,8 +30,8 @@ const organizeCrates = (columns, moveset) => {
 		.split('\n')
 		.forEach(item => {
 			const move = item.split(' ');
-			const [ammount, from, to] = [move[1], move[3], move[5]];
-			moveCrates(array, ammount, from, to);
+			const [amount, from, to] = [move[1], move[3], move[5]];
+			moveCrates(array, amount, from, to);
 		});
 
 	return array;
@@ -39,20 +39,41 @@ const organizeCrates = (columns, moveset) => {
 
 const getTopCrates = columns => columns.reduce((sum, column) => sum + column.slice(-1)[0][1], '');
 
+const [egCrates, egMoves] = eg.split('\n\n');
 const [crates, moves] = input.split('\n\n');
-// const [crates, moves] = eg.split('\n\n');
 
+console.log(getTopCrates(organizeCrates(getColumns(egCrates), egMoves)));
 console.log(getTopCrates(organizeCrates(getColumns(crates), moves)));
 
 // ----------------------------------------------------------------------------
 
-// console.log(placeholder(eg));
-// console.log(placeholder(input));
+const bulkMoveCrates = (columns, amount, from, to) => {
+
+	const crates = columns[from -1].splice(columns[from -1].length - amount, amount)
+	columns[to -1].push(...crates);
+};
+
+const bulkOrganizeCrates = (columns, moveset) => {
+	const array = JSON.parse(JSON.stringify(columns));
+
+	moveset
+		.split('\n')
+		.forEach(item => {
+			const move = item.split(' ');
+			const [amount, from, to] = [move[1], move[3], move[5]];
+			bulkMoveCrates(array, amount, from, to);
+		});
+
+	return array;
+};
+
+console.log(getTopCrates(bulkOrganizeCrates(getColumns(egCrates), egMoves)));
+console.log(getTopCrates(bulkOrganizeCrates(getColumns(crates), moves)));
 
 /*
 Wrong guesses:
 
 Correct:
-	1) 
-	2) 
+	1) CNSZFDVLJ
+	2) QNDWLMGNS
 */
