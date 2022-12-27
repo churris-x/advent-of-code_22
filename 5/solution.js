@@ -5,7 +5,7 @@ const input = fs.readFileSync('./input.txt').toString().slice(0, -1);
 // const [crates, moves] = input.split('\n\n');
 const [crates, moves] = eg.split('\n\n');
 
-const processInput = crates => crates
+const getColumns = crates => crates
 	.split('\n')
 	.map(i=> [...`${i} `]
 		.reduce(([row, crate, count], current) => {
@@ -17,12 +17,18 @@ const processInput = crates => crates
 		? [...columns, array.map(row => row[index]).reverse()] 
 		: columns
 	, [])
+	.map(column => column.filter( crate => !!crate.trim()))
 
-console.log(crates);
-console.log(processInput(crates));
+const egColumns = getColumns(crates);
 
-// console.log(placeholder(eg));
-// console.log(placeholder(input));
+const moveCrates = (columns, moveset) => {
+
+};
+
+// console.log(crates);
+console.log(egColumns);
+console.log(moves);
+console.log(moveCrates(eg));
 
 // ----------------------------------------------------------------------------
 
