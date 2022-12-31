@@ -6,8 +6,8 @@
   "scripts": {
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "fetch": "read -p 'Days: ' days && eval echo $days | tr ' ' '\\n' | xargs -I @ node fetchInput.js @",
-    "delete": "read -p 'Days: ' days && read -p 'Are you sure? [y/n]: ' yes && if [ $yes == 'y' ]; then eval echo $days | tr ' ' '\\n' | xargs -I @ rm @/input.txt && eval echo Deleted input for $days; fi"
+    "fetch": "sh ./scripts/fetch.sh",
+    "delete": "sh ./scripts/delete.sh",
   },
   "repository": {
     "type": "git",
