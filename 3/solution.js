@@ -2,6 +2,8 @@ const fs = require('fs');
 const eg = fs.readFileSync('./eg.txt').toString().slice(0, -1);
 const input = fs.readFileSync('./input.txt').toString().slice(0, -1);
 
+// Part 1 ---------------------------------------------------------------------
+
 const priority = ' abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
 const findCommonItems = (a, b) => [...a]
@@ -20,7 +22,7 @@ const findTotalPriority = sacks => sacks
 console.log(findTotalPriority(eg));
 console.log(findTotalPriority(input));
 
-// ----------------------------------------------------------------------------
+// Part 2 ---------------------------------------------------------------------
 
 const findBadge = (a, b, c) => findCommonItems(
 	findCommonItems(a, b).join(''),
@@ -43,6 +45,7 @@ const findTotalBadgePriority = groups => groups
 
 console.log(findTotalBadgePriority(eg)[0]);
 console.log(findTotalBadgePriority(input)[0]);
+
 /*
 Wrong guesses:
 	

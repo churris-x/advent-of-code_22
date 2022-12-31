@@ -2,6 +2,8 @@ const fs = require('fs');
 const eg = fs.readFileSync('./eg.txt').toString().slice(0, -1);
 const input = fs.readFileSync('./input.txt').toString().slice(0, -1);
 
+// Part 1 ---------------------------------------------------------------------
+
 const bContainsA = ([lowerA, upperA], [lowerB, upperB]) => (lowerA >= lowerB && upperA <= upperB);
 
 const totalContains = pairs => pairs
@@ -14,7 +16,7 @@ const totalContains = pairs => pairs
 console.log(totalContains(eg));
 console.log(totalContains(input));
 
-// ----------------------------------------------------------------------------
+// Part 2 ---------------------------------------------------------------------
 
 const bOverlapsA = ([lowerA, upperA], [lowerB, upperB]) => (upperA >= lowerB && upperB >= lowerA);
 

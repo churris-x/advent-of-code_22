@@ -2,6 +2,8 @@ const fs = require('fs');
 const eg = fs.readFileSync('./eg.txt').toString().slice(0, -1);
 const input = fs.readFileSync('./input.txt').toString().slice(0, -1);
 
+// Part 1 ---------------------------------------------------------------------
+
 const getColumns = crates => crates
 	.split('\n')
 	.map(i=> [...`${i} `]
@@ -45,10 +47,9 @@ const [crates, moves] = input.split('\n\n');
 console.log(getTopCrates(organizeCrates(getColumns(egCrates), egMoves)));
 console.log(getTopCrates(organizeCrates(getColumns(crates), moves)));
 
-// ----------------------------------------------------------------------------
+// Part 2 ---------------------------------------------------------------------
 
 const bulkMoveCrates = (columns, amount, from, to) => {
-
 	const crates = columns[from -1].splice(columns[from -1].length - amount, amount)
 	columns[to -1].push(...crates);
 };

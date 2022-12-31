@@ -1,6 +1,8 @@
 const fs = require('fs');
 const input = fs.readFileSync('./input.txt').toString().slice(0, -1);
 
+// Part 1 ---------------------------------------------------------------------
+
 const eg = `A Y
 B X
 C Z`;
@@ -31,7 +33,7 @@ const sumScores = rounds => rounds
 console.log(sumScores(eg));
 console.log(sumScores(input));
 
-// Part 2
+// Part 2 ---------------------------------------------------------------------
 
 const resultToScore = {
 	X: 0,
@@ -56,7 +58,6 @@ const sumScores2 = rounds => rounds
 
 console.log(sumScores2(eg));
 console.log(sumScores2(input));
-
 
 /*
 Wrong guesses:
