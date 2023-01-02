@@ -1,6 +1,11 @@
+// TODO(Fran): Dynamically get the correct path, preferably without libs
+// const hello = process.argv[1].split('/').slice(0, -1).join('/')
+// console.log(process.argv, hello);
+
 const fs = require('fs');
 const eg = fs.readFileSync('./eg.txt').toString().slice(0, -1);
 const input = fs.readFileSync('./input.txt').toString().slice(0, -1);
+
 
 // Part 1 ---------------------------------------------------------------------
 
