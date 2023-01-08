@@ -29,10 +29,11 @@ Run each solution with `node 1/solution.js` to print the answers of part 1 and 2
 - [x] put days in separate folder? nah
 - [ ] Maybe only allow dev to fetch and use the token, the already solved solutions should keep the input?
 - [ ] Make the fs.readFile api work from different working directories
+- [ ] Get help from rukić in refactoring bash scripts
 
 
 ## License
 
-My solutions are released under the [MIT License][opensource].
+My solutions are released under the [MIT License][mit].
 
-[opensource]: http://www.opensource.org/licenses/MIT
+[mit]: http://www.opensource.org/licenses/MIT
