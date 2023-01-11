@@ -9,7 +9,7 @@ const { AUTH_TOKEN } = process.env;
 const getInputByDay = async (day) => {
 	if (!AUTH_TOKEN) throw 'Function getInputByDay is missing AUTH_TOKEN';
 	if (!day || isNaN(day)) throw `Function getInputByDay needs a day number, got instead: ${day}`;
-	if (day < 1 || day > 25) throw 'Function getInputByDay: invalid day, needs to be between 1-25';
+	if (day < 1 || day > 25) throw `Function getInputByDay: invalid day, needs to be between 1-25, got instead: ${day}`;
 
 	const url = `https://adventofcode.com/2022/day/${day}/input`;
 	const response = await fetch(url, {
