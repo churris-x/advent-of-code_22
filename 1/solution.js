@@ -1,6 +1,6 @@
 const fs = require('fs');
-const eg = fs.readFileSync('./eg.txt').toString();
-const input = fs.readFileSync('./input.txt').toString();
+const eg = fs.readFileSync(require.resolve('./eg.txt')).toString();
+const input = fs.readFileSync(require.resolve('./input.txt')).toString();
 
 // Part 1 ---------------------------------------------------------------------
 

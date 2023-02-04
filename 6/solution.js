@@ -1,6 +1,6 @@
 const fs = require('fs');
-const eg = fs.readFileSync('./eg.txt').toString().slice(0, -1);
-const input = fs.readFileSync('./input.txt').toString().slice(0, -1);
+const eg = fs.readFileSync(require.resolve('./eg.txt')).toString().slice(0, -1);
+const input = fs.readFileSync(require.resolve('./input.txt')).toString().slice(0, -1);
 
 /*
 bvwbjplbgvbhsrlpgdmjqwftvncz: first marker after character 5

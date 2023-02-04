@@ -1,5 +1,5 @@
 const fs = require('fs');
-const input = fs.readFileSync('./input.txt').toString().slice(0, -1);
+const input = fs.readFileSync(require.resolve('./input.txt')).toString().slice(0, -1);
 
 // Part 1 ---------------------------------------------------------------------
 

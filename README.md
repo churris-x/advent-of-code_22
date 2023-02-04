@@ -28,7 +28,7 @@ Run each solution with `node 1/solution.js` to print the answers of part 1 and 2
 - [ ] Fetch inputs should look at directories without input and fetch then
 - [x] put days in separate folder? nah
 - [ ] Maybe only allow dev to fetch and use the token, the already solved solutions should keep the input?
-- [ ] Make the fs.readFile api work from different working directories
+- [x] Make the fs.readFile api work from different working directories -> require.resolve('path/')
 - [ ] Get help from rukić in refactoring bash scripts
 
 

@@ -1,16 +1,16 @@
 const fs = require('fs');
-const eg = fs.readFileSync('./eg.txt').toString().slice(0, -1);
-const input = fs.readFileSync('./input.txt').toString().slice(0, -1);
+const eg = fs.readFileSync(require.resolve('./eg.txt')).toString().slice(0, -1);
+const input = fs.readFileSync(require.resolve('./input.txt')).toString().slice(0, -1);
 
 // Part 1 ---------------------------------------------------------------------
 
-// console.log(placeholder(eg));
-// console.log(placeholder(input));
+// console.log('1) eg: ', placeholder(eg));
+// console.log('1) input: ', placeholder(input));
 
 // Part 2 ---------------------------------------------------------------------
 
-// console.log(placeholder(eg));
-// console.log(placeholder(input));
+// console.log('2) eg: ', placeholder(eg));
+// console.log('2) input: ', placeholder(input));
 
 /*
 Wrong guesses:
