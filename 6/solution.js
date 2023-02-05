@@ -14,18 +14,21 @@ zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw:  zqfr   character 11
 
 // Part 1 ---------------------------------------------------------------------
 
-const getMarker = buffer => [...buffer].reduce((marker, item, index) => {
-	const sum = `${marker}${item}`;
-	if (sum.length === 4 && [...sum].every(i => [...sum.matchAll(i)].length === 1)) return sum;
-	return `${marker}${item}`;
-}, '');
-console.log(getMarker(eg.split('\n')[0]));
+const getMarker = buffer => [...buffer].reduce((marker, character, index) => {
+	if (marker) return marker;
+	
+	const check = buffer.slice(index, index + 4);
+	const allUnique = [...check].every((char, index) => check.lastIndexOf(char) === index);
+	if (allUnique) return index + 4;
 
-console.log(getMarker(eg.split('\n')[0]));
-console.log(getMarker(eg.split('\n')[1]));
-console.log(getMarker(eg.split('\n')[2]));
-console.log(getMarker(eg.split('\n')[3]));
-// console.log(getMarker(input));
+	return '';
+}, '');
+
+ console.log(getMarker(eg.split('\n')[0]));
+ console.log(getMarker(eg.split('\n')[1]));
+ console.log(getMarker(eg.split('\n')[2]));
+ console.log(getMarker(eg.split('\n')[3]));
+ console.log(getMarker(input));
 
 // Part 2 ---------------------------------------------------------------------
 
@@ -34,8 +37,8 @@ console.log(getMarker(eg.split('\n')[3]));
 
 /*
 Wrong guesses:
-
+	sprm
 Correct:
-	1) 
+	1) 1779
 	2) 
 */
