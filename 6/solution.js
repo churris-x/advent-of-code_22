@@ -32,13 +32,26 @@ const getMarker = buffer => [...buffer].reduce((marker, character, index) => {
 
 // Part 2 ---------------------------------------------------------------------
 
-// console.log(placeholder(eg));
-// console.log(placeholder(input));
+const getMessage = buffer => [...buffer].reduce((marker, character, index) => {
+	if (marker) return marker;
+	
+	const check = buffer.slice(index, index + 14);
+	const allUnique = [...check].every((char, index) => check.lastIndexOf(char) === index);
+	if (allUnique) return index + 14;
+
+	return '';
+}, '');
+
+console.log(getMessage(eg.split('\n')[0]));
+console.log(getMessage(eg.split('\n')[1]));
+console.log(getMessage(eg.split('\n')[2]));
+console.log(getMessage(eg.split('\n')[3]));
+console.log(getMessage(input));
 
 /*
 Wrong guesses:
 	sprm
 Correct:
 	1) 1779
-	2) 
+	2) 2635
 */
