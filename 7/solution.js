@@ -55,13 +55,14 @@ const getTree = commands => commands
 	.reduce(({ path, tree }, command) => {
 		const args = command.split(' ');
 		
-		// if command, cd changes path, ls nothing
-		if (command.includes('$ ls')) return { path, tree };
+		// if command cd, change path, else skip
 		if (command.includes('$ cd ')) {
 			if (args[2] === '/') return {path: '', tree}
 			if (args[2] === '..') return {path: path.slice(0, path.lastIndexOf('/')), tree}
 			return {path: `${path}/${args[2]}`, tree}
 		}
+		if (command.includes('$ ')) return { path, tree };
+
 		// if file add to tree
 		return {path, tree: [ ...tree, [`${path}/${args[1]}`, (Number(args[0]) || 0) ] ]}
 
