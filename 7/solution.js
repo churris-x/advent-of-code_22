@@ -50,32 +50,39 @@ $ ls
 
 */
 
-const getTree = commands => commands.split('\n').reduce(({ path, tree }, command) => {
-	const args = command.split(' ');
-	
-	// if command, cd changes path, ls nothing
-	if (command.includes('$ ls')) return { path, tree };
-	if (command.includes('$ cd ')) {
-		if (args[2] === '/') return {path: '', tree}
-		if (args[2] === '..') return {path: path.slice(0, path.lastIndexOf('/')), tree}
-		return {path: `${path}/${args[2]}`, tree}
-	}
-	// if file add to tree
-	return {path, tree: [ ...tree, [`${path}/${args[1]}`, (Number(args[0]) || 0) ] ]}
+const getTree = commands => commands
+	.split('\n')
+	.reduce(({ path, tree }, command) => {
+		const args = command.split(' ');
+		
+		// if command, cd changes path, ls nothing
+		if (command.includes('$ ls')) return { path, tree };
+		if (command.includes('$ cd ')) {
+			if (args[2] === '/') return {path: '', tree}
+			if (args[2] === '..') return {path: path.slice(0, path.lastIndexOf('/')), tree}
+			return {path: `${path}/${args[2]}`, tree}
+		}
+		// if file add to tree
+		return {path, tree: [ ...tree, [`${path}/${args[1]}`, (Number(args[0]) || 0) ] ]}
 
-}, {path: '', tree: [['/', 0]]}).tree
-.sort();
+	}, {path: '', tree: [['/', 0]]}).tree;
 
-const egTree = getTree(eg);
-const egFolders = egTree.filter(([path, size]) => size === 0)
-const folderSizes = egFolders.map(([path]) => path);
+const getFolderSizes = tree => tree
+	.filter(([path, size]) => size === 0)
+	.sort()
+	.map(([folderPath]) => ([folderPath, tree
+		.filter(([path, size]) => path.includes(folderPath))
+		.reduce((sum, [path, size]) => sum + size, 0)
+	]))
 
-console.log(egTree);
-console.log(egFolders);
-console.log(folderSizes);
+const getSizeBelowLimit = folders => folders
+	.filter(([path, size]) => size <= 100000)
+	.reduce((sum, [path, size]) => sum + size, 0)
 
-// console.log('1) eg: ', placeholder(eg));
-// console.log('1) input: ', placeholder(input));
+// console.log(getTree(eg), '\n\n', getFolderSizes(getTree(eg)), '\n\n');
+
+ console.log('1) eg: ', getSizeBelowLimit(getFolderSizes(getTree(eg))));
+ console.log('1) input: ', getSizeBelowLimit(getFolderSizes(getTree(input))));
 
 // Part 2 ---------------------------------------------------------------------
 
@@ -86,6 +93,6 @@ console.log(folderSizes);
 Wrong guesses:
 
 Correct:
-	1) 
+	1) 1118405
 	2) 
 */
