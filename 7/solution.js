@@ -50,24 +50,31 @@ $ ls
 
 */
 
-const placeholder = commands => commands.split('\n').reduce((dir, command) => {
-	const {path, tree} = dir;
+const getTree = commands => commands.split('\n').reduce(({ path, tree }, command) => {
 	const args = command.split(' ');
-
-	if (command.includes('$ ls')) return dir;
 	
-	// if '$ cd' change path
+	// if command, cd changes path, ls nothing
+	if (command.includes('$ ls')) return { path, tree };
 	if (command.includes('$ cd ')) {
 		if (args[2] === '/') return {path: '', tree}
 		if (args[2] === '..') return {path: path.slice(0, path.lastIndexOf('/')), tree}
 		return {path: `${path}/${args[2]}`, tree}
 	}
 	// if file add to tree
-	return {path, tree: {...tree, [`${path}/${args[1]}`]: Number(args[0]) || 0}}
+	return {path, tree: [ ...tree, [`${path}/${args[1]}`, (Number(args[0]) || 0) ] ]}
 
-}, {path: '', tree: {'/': 0}}).tree;
+}, {path: '', tree: [['/', 0]]}).tree
+.sort();
 
-console.log('1) eg: ', placeholder(eg));
+const egTree = getTree(eg);
+const egFolders = egTree.filter(([path, size]) => size === 0)
+const folderSizes = egFolders.map(([path]) => path);
+
+console.log(egTree);
+console.log(egFolders);
+console.log(folderSizes);
+
+// console.log('1) eg: ', placeholder(eg));
 // console.log('1) input: ', placeholder(input));
 
 // Part 2 ---------------------------------------------------------------------
