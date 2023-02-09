@@ -30,6 +30,7 @@ Run each solution with `node 1/solution.js` to print the answers of part 1 and 2
 - [ ] Maybe only allow dev to fetch and use the token, the already solved solutions should keep the input?
 - [x] Make the fs.readFile api work from different working directories -> require.resolve('path/')
 - [ ] Get help from rukić in refactoring bash scripts
+- [ ] Fetch all command, loops through existing folders <- THIS
 
 
 ## License
