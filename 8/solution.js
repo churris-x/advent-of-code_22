@@ -6,37 +6,69 @@ const input = fs.readFileSync(require.resolve('./input.txt')).toString().slice(0
 
 /*
 	hmm this is going to be difficult
+
 	N
    W E
 	S
+	
+	Store visibility as a sum of powers of 2, then check values with bitwise operator
+	eg: 
+		north + west = 9
+		9 & north = true
+		9 & east = false
 
-	each direction will be a boolean, n: true means it is visible from the north nah
-
-	'0000'
-	'0001' n
-	'0010' e
-	'0100' s
-	'1000' w	
+	'0000'   0   u ndefined
+	'0001'   1   n orth
+	'0010'   2   e ast
+	'0100'   4   s outh
+	'1000'   8   w est
 
 */
 
+const [u, n, e, s, w] = [0, 1, 2, 4, 8];
+
 const getRows = grid => grid.split('\n').map(row => row.split(''));
-const getColumns = grid => getRows(grid)
+const getColumns = rows => rows
 	.map((row, rowIndex, array) => row
 		.map((i, index) => array[index][rowIndex])
 	);
 
-const placeholder = grid => {
+const checkVisible = (array, heading = 0) => array.reduce(({highest, set}, tree) => {
+	const [height, visible] = tree;
+	if (highest < height) return { highest: height, set: [...set, [height, visible + heading]]}
 
-	return {
-		rows: getRows(grid),
-		columns: getColumns(grid),
-	}
+	return {highest, set: [...set, tree]}
+
+}, {highest: -1, set: []}).set;
+
+const checkGrid = grid => {
+	const rows = getRows(grid).map(i => i.map(i => [i, u]));
+
+	const checkedRows = rows
+		.map(i => checkVisible(i, w))
+		.map(i => [...i].reverse())
+		.map(i => checkVisible(i, e))
+
+	const checkedColumns = getColumns(checkedRows)
+		.map(i => checkVisible(i, n))
+		.map(i => [...i].reverse())
+		.map(i => checkVisible(i, s))
+
+	return checkedColumns
 };
 
+// const showVisibility = grid => 
+
+const getVisible = grid => grid
+	.reduce((count, rows) => count + rows
+		.reduce((count, [height, visible]) => count + !!visible
+		, 0)
+	, 0)
+
 console.log(eg);
-console.log('1) eg: ', placeholder(eg));
- // console.log('1) input: ', placeholder(input));
+console.log('1) eg: ', checkGrid(eg));
+console.log('1) eg: ', getVisible(checkGrid(eg)));
+console.log('1) input: ', getVisible(checkGrid(input)));
 
 // Part 2 ---------------------------------------------------------------------
 
@@ -47,6 +79,6 @@ console.log('1) eg: ', placeholder(eg));
 Wrong guesses:
 
 Correct:
-	1) 
+	1) 1711
 	2) 
 */
