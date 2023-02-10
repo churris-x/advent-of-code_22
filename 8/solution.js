@@ -93,6 +93,28 @@ console.log('1) input: ', getVisible(checkGrid(input)));
 
 // Part 2 ---------------------------------------------------------------------
 
+const checkScore = array => array.reduce(({}, [height, score]) => {
+
+}, {});
+
+const getGridScore = grid => {
+	const rows = getRows(grid).map(i => i.map(i => [i, 1]));
+
+	const checkedRows = rows
+		.map(i => checkScore(i))
+		.map(i => [...i].reverse())
+		.map(i => checkScore(i))
+		// .map(i => [...i].reverse())			// only needed if orientation is important
+
+	const checkedColumns = getColumns(checkedRows)
+		.map(i => checkScore(i))
+		.map(i => [...i].reverse())
+		.map(i => checkScore(i))
+		// .map(i => [...i].reverse())			// only needed if orientation is important
+
+	return checkedColumns
+}
+
 // console.log('2) eg: ', placeholder(eg));
 // console.log('2) input: ', placeholder(input));
 
