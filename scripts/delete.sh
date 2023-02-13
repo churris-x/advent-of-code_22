@@ -1,7 +1,19 @@
-read -p 'Days: ' days &&
-read -p 'Are you sure? [y/n]: ' yes &&
-if [ $yes == 'y' ]; then
-	eval echo $days |
-	tr ' ' '\\n' |
-	xargs -I @ rm @/input.txt && eval echo Deleted input for $days;
-fi
+#!/bin/bash
+
+# If no days are passed, prompt user
+DAYS=$@;
+if [ -z "$1" ]; then
+	read -p 'Days: ' days
+	DAYS=$days;
+fi;
+
+# Ask to confirm before continuing
+read -p 'Are you sure? [y/n]: ' yn 
+case $yn in 
+	[Yy]* ) break;;
+	* ) exit;;
+esac
+
+eval echo $DAYS |
+tr ' ' '\n' |
+xargs -I @ rm -v @/input.txt

@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# If no days are passed, prompt user
 DAYS=$@;
 if [ -z "$1" ]; then
 	read -p 'Days: ' days
@@ -7,5 +8,5 @@ if [ -z "$1" ]; then
 fi;
 
 echo $DAYS |
-tr ' ' '\n'|
-xargs -I @ echo node --no-warnings fetchInput.js @ 
+tr ' ' '\n' |
+xargs -I @ node --no-warnings fetchInput.js @ 
