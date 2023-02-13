@@ -2,11 +2,11 @@
 Solutions to each day, in the following format:
 
 ```bash
-1					# day
-├── eg.txt			# example input
-├── input.txt		# actual puzzle input
-├── solution.js		# contains the puzzle solution
-└── todo.txt		# puzzle preamble and premise
+1                   # day
+├── eg.txt          # example input
+├── input.txt       # actual puzzle input
+├── solution.js     # contains the puzzle solution
+└── todo.txt        # puzzle preamble and premise
 ```
 
 ### Installing
