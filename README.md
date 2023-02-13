@@ -22,7 +22,7 @@ Run each solution with `node 1/solution.js` to print the answers of part 1 and 2
 ## Todo:
 
 - [x] Transfer scripts to bash scripts (run with `sh`)
-- [ ] Fetch and delete need to check if there is an `$1` input before prompting user
+- [x] Fetch and delete need to check if there is an `$1` input before prompting user
 - [ ] After first install (`npm start`) create the `.env` file and prompt with the token `prompt | cat > .env`
 - [ ] Script that creates the next puzzle folder, fetches `input.txt`, `eg.txt`, `todo.md` and creates `solution.js` template
 - [ ] Fetch inputs should look at directories without input and fetch then
