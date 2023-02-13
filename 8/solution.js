@@ -17,12 +17,11 @@ const input = fs.readFileSync(require.resolve('./input.txt')).toString().slice(0
 		9 & north = true
 		9 & east = false
 
-	'0000'   0   u ndefined
+	'0000'   0   invisible
 	'0001'   1   n orth
 	'0010'   2   e ast
 	'0100'   4   s outh
 	'1000'   8   w est
-
 */
 
 const [north, east, south, west] = [1, 2, 4, 8];
@@ -54,7 +53,7 @@ const checkGrid = grid => {
 		.map(i => checkVisible(i, north))
 		.map(i => [...i].reverse())
 		.map(i => checkVisible(i, south))
-		// .map(i => [...i].reverse())			// only needed if orientation is important
+		// .map(i => [...i].reverse())
 
 	return checkedColumns
 };
@@ -92,10 +91,20 @@ console.log('1) eg: ', getVisible(checkGrid(eg)));
 console.log('1) input: ', getVisible(checkGrid(input)));
 
 // Part 2 ---------------------------------------------------------------------
+/*
+	somewhow it's gotten worse. ok 
+	33549
+*/
 
-const checkScore = array => array.reduce(({}, [height, score]) => {
+const checkScore = array => array.map(([height, score], index) => {
+	const lowerTrees = array.slice(index + 1).reduce(([visible, count], tree) => {
+		if (!visible) return;
+		if (tree[0] < height) return [visible, count + 1];
+		if (tree[0] >= height) return [false, count + 1];
+	}, [true, count]).count
 
-}, {});
+	return [height, score * lowerTrees]
+});
 
 const getGridScore = grid => {
 	const rows = getRows(grid).map(i => i.map(i => [i, 1]));
@@ -104,16 +113,20 @@ const getGridScore = grid => {
 		.map(i => checkScore(i))
 		.map(i => [...i].reverse())
 		.map(i => checkScore(i))
-		// .map(i => [...i].reverse())			// only needed if orientation is important
 
 	const checkedColumns = getColumns(checkedRows)
 		.map(i => checkScore(i))
 		.map(i => [...i].reverse())
 		.map(i => checkScore(i))
-		// .map(i => [...i].reverse())			// only needed if orientation is important
 
 	return checkedColumns
 }
+
+const getScores = grid => grid
+	.reduce((count, rows) => count + rows
+		.reduce((count, [height, visible]) => count + !!visible
+		, 0)
+	, 0)
 
 // console.log('2) eg: ', placeholder(eg));
 // console.log('2) input: ', placeholder(input));
