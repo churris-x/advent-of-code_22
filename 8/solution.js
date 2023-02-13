@@ -93,15 +93,15 @@ console.log('1) input: ', getVisible(checkGrid(input)));
 // Part 2 ---------------------------------------------------------------------
 /*
 	somewhow it's gotten worse. ok 
-	33549
+	Not that bad actually
 */
 
 const checkScore = array => array.map(([height, score], index) => {
 	const lowerTrees = array.slice(index + 1).reduce(([visible, count], tree) => {
-		if (!visible) return;
+		if (!visible) return [visible, count];
 		if (tree[0] < height) return [visible, count + 1];
 		if (tree[0] >= height) return [false, count + 1];
-	}, [true, count]).count
+	}, [true, 0])[1]
 
 	return [height, score * lowerTrees]
 });
@@ -122,19 +122,20 @@ const getGridScore = grid => {
 	return checkedColumns
 }
 
-const getScores = grid => grid
-	.reduce((count, rows) => count + rows
-		.reduce((count, [height, visible]) => count + !!visible
-		, 0)
-	, 0)
+const getBestScore = grid => grid.reduce((bestScore, row) => {
+	const rowScore = row.reduce((bestScore, [height, score]) => 
+		score > bestScore ? score : bestScore, 0);
 
-// console.log('2) eg: ', placeholder(eg));
-// console.log('2) input: ', placeholder(input));
+	return rowScore > bestScore ? rowScore : bestScore;
+}, 0)
+
+console.log('2) eg: ', getBestScore(getGridScore(eg)));
+console.log('2) input: ', getBestScore(getGridScore(input)));
 
 /*
 Wrong guesses:
 
 Correct:
 	1) 1711
-	2) 
+	2) 301392
 */
