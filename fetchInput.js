@@ -4,9 +4,9 @@ const fs = require('fs');
 const { AUTH_TOKEN } = process.env;
 const file = process.argv[1];
 
-
 // TODO(Fran): check if no day use Date.getDate();
 // TODO(Fran): add year param? new Date(`1/1/${21}`).getFullYear() to allow 2 digit
+// TODO(Fran): only log relative file path, not full path
 
 const getInputByDay = async day => {
 	if (!AUTH_TOKEN) throw `${file} is missing AUTH_TOKEN`;
@@ -22,7 +22,6 @@ const getInputByDay = async day => {
 	const data = await response.text();
 	return data;
 };
-
 
 // Fetches and saves input to a file when this file is called
 const day = process.argv[2];
