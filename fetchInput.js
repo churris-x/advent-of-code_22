@@ -14,6 +14,7 @@ const getInputByDay = async day => {
 	if (day < 1 || day > 25) throw `${file}: invalid day, needs to be between 1-25, got instead: ${day}`;
 
 	const url = `https://adventofcode.com/2022/day/${day}/input`;
+	// TODO(Fran): try catch this
 	const response = await fetch(url, {
 		'headers': {
 			'cookie': `session=${AUTH_TOKEN}`,
