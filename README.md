@@ -12,7 +12,7 @@ Solutions to each day, in the following format:
 ## Use
 1. Run `$ npm i` to install `dotenv`.
 
-2. Run `$ npm start`, you will be prompted for your AoC session token (cookie) to fetch your puzzle inputs. You can also manually write it to the `.env` file create by the command
+2. Run `$ npm start`, you will be prompted for your AoC session token (cookie) to fetch your puzzle inputs. You can also manually write it to the `.env` file with the key `AUTH_TOKEN=2343223432...`
 
 3. Run `$ npm run fetch <days>` to fetch the desired days, you can fetch many days at once with brace expansion, eg: `$ npm run fetch {1..5}` will translate to `$ npm run fetch 1 2 3 4 5`
 4. Run puzzles with `$ node <day>/solution.js` if the coresponding folder existis
@@ -32,6 +32,8 @@ Solutions to each day, in the following format:
 - [x] After first install (`$ npm start`) creates the `.env` file and prompt with the token `prompt | cat > .env`
 - [ ] Script that creates the next puzzle folder, fetches `input.txt`, `eg.txt`, `todo.md` and creates `solution.js` template
 - [ ] Add flag to fetch command that loops through existing day folders
+- [ ] Create `util/` folder, move `template.js` and `fetchInput.js` to it
+- [ ] Create util that given a `async path => fs.readFile(require.resolve(path))` something like that with try catch
 
 ## License
 
