@@ -12,4 +12,4 @@ fi;
 
 echo $DAYS |
 tr ' ' '\n' |
-xargs -I @ node --no-warnings fetchInput.js @ 
+xargs -I @ node --no-warnings utils/fetchInput.js @ 

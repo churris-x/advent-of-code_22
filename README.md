@@ -31,8 +31,8 @@ Solutions to each day, in the following format:
 - [x] Get help in refactoring bash scripts
 - [x] After first install (`$ npm start`) creates the `.env` file and prompt with the token `prompt | cat > .env`
 - [ ] Script that creates the next puzzle folder, fetches `input.txt`, `eg.txt`, `todo.md` and creates `solution.js` template
+- [x] Create `util/` folder, move `template.js` and `fetchInput.js` to it
 - [ ] Add flag to fetch command that loops through existing day folders
-- [ ] Create `util/` folder, move `template.js` and `fetchInput.js` to it
 - [ ] Create util that given a `async path => fs.readFile(require.resolve(path))` something like that with try catch
 
 ## License
