@@ -18,9 +18,8 @@ Solutions to each day, in the following format:
 4. Run puzzles with `$ node <day>/solution.js` if the coresponding folder existis
 
 ## NPM scripts
-Run 
-- `fetch` prompt to input how many days you want to fetch
-- `delete` prompt to input how many days you want to delete, confirm with <kbd>y</kbd>
+- `$ npm run fetch <days>` or input which days you want to fetch
+- `$ npm run delete <days>` or input which days you want to delete, confirm with <kbd>y</kbd>
 
 ## Todo:
 
