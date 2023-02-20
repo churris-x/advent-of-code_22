@@ -9,13 +9,16 @@ Solutions to each day, in the following format:
 └── todo.txt        # puzzle preamble and premise
 ```
 
-### Installing
+## Use
 1. Run `$ npm i` to install `dotenv`.
-<!-- 2. Run `$ npm start`, you will be prompted for your AOC session token so a the fetch can be made -->
 
-Run each solution with `$ node 1/solution.js` to print the answers of part 1 and 2 of day 1
+2. Run `$ npm start`, you will be prompted for your AoC session token (cookie) to fetch your puzzle inputs. You can also manually write it to the `.env` file create by the command
 
-### NPM scripts
+3. Run `$ npm run fetch <days>` to fetch the desired days, you can fetch many days at once with brace expansion, eg: `$ npm run fetch {1..5}` will translate to `$ npm run fetch 1 2 3 4 5`
+4. Run puzzles with `$ node <day>/solution.js` if the coresponding folder existis
+
+## NPM scripts
+Run 
 - `fetch` prompt to input how many days you want to fetch
 - `delete` prompt to input how many days you want to delete, confirm with <kbd>y</kbd>
 
