@@ -5,9 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "sh scripts/freshInstall.sh",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "fetch": "sh ./scripts/fetch.sh",
-    "delete": "sh ./scripts/delete.sh"
+    "fetch": "sh scripts/fetch.sh",
+    "delete": "sh scripts/delete.sh"
   },
   "repository": {
     "type": "git",

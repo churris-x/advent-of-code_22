@@ -11,7 +11,7 @@ const file = process.argv[1];
 const getInputByDay = async day => {
 	if (!AUTH_TOKEN) throw `${file} is missing AUTH_TOKEN`;
 	if (!day || isNaN(day)) throw `${file} needs a day number, got instead: ${day}`;
-	if (day < 1 || day > 25) throw `${file}: invalid day, needs to be between 1-25, got instead: ${day}`;
+	if (day < 1 || day > 25) throw `${file}: day should be between 1-25, got instead: ${day}`;
 
 	const url = `https://adventofcode.com/2022/day/${day}/input`;
 	// TODO(Fran): try catch this
