@@ -20,9 +20,9 @@ const findTopThreeSum = inventory => inventory
 	.slice(0,3)
 	.reduce((sum, next) => sum + next);
 
-console.log(findHighestCalorie(eg));
-console.log(findHighestCalorie(input));
-console.log(findTopThreeSum(input));
+console.log('1) eg: ', findHighestCalorie(eg));
+console.log('1) input: ', findHighestCalorie(input));
+console.log('2) input: ', findTopThreeSum(input));
 
 /*
 Wrong guesses:

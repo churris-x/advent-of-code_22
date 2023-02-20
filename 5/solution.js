@@ -45,8 +45,8 @@ const getTopCrates = columns => columns.reduce((sum, column) => sum + column.sli
 const [egCrates, egMoves] = eg.split('\n\n');
 const [crates, moves] = input.split('\n\n');
 
-console.log(getTopCrates(organizeCrates(getColumns(egCrates), egMoves)));
-console.log(getTopCrates(organizeCrates(getColumns(crates), moves)));
+console.log('1) eg: ', getTopCrates(organizeCrates(getColumns(egCrates), egMoves)));
+console.log('1) input: ', getTopCrates(organizeCrates(getColumns(crates), moves)));
 
 // Part 2 ---------------------------------------------------------------------
 
@@ -69,8 +69,8 @@ const bulkOrganizeCrates = (columns, moveset) => {
 	return array;
 };
 
-console.log(getTopCrates(bulkOrganizeCrates(getColumns(egCrates), egMoves)));
-console.log(getTopCrates(bulkOrganizeCrates(getColumns(crates), moves)));
+console.log('2) eg: ', getTopCrates(bulkOrganizeCrates(getColumns(egCrates), egMoves)));
+console.log('2) input: ', getTopCrates(bulkOrganizeCrates(getColumns(crates), moves)));
 
 /*
 Wrong guesses:

@@ -13,8 +13,8 @@ const totalContains = pairs => pairs
 			.map(i => Number(i))))
 	.reduce((sum, [a, b]) => bContainsA(a, b) || bContainsA(b, a) ? sum + 1 : sum, 0);
 
-console.log(totalContains(eg));
-console.log(totalContains(input));
+console.log('1) eg: ', totalContains(eg));
+console.log('1) input: ', totalContains(input));
 
 // Part 2 ---------------------------------------------------------------------
 
@@ -27,8 +27,8 @@ const totalOverlaps = pairs => pairs
 			.map(i => Number(i))))
 	.reduce((sum, [a, b]) => bOverlapsA(a, b) ? sum + 1 : sum, 0);
 
-console.log(totalOverlaps(eg));
-console.log(totalOverlaps(input));
+console.log('2) eg: ', totalOverlaps(eg));
+console.log('2) input: ', totalOverlaps(input));
 
 /*
 Wrong guesses:
@@ -36,7 +36,7 @@ Wrong guesses:
 	660 too high
 	330 too low
 	427
-	// fucking stupid javascript type coersion fuck off you duck type cunt
+	// fucking stupid javascript type coersion quack off you duck type
 
 Correct:
 	1) 651

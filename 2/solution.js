@@ -1,11 +1,8 @@
 const fs = require('fs');
+const eg = fs.readFileSync(require.resolve('./eg.txt')).toString().slice(0, -1);
 const input = fs.readFileSync(require.resolve('./input.txt')).toString().slice(0, -1);
 
 // Part 1 ---------------------------------------------------------------------
-
-const eg = `A Y
-B X
-C Z`;
 
 const symbolValue = {
 	A: 1,
@@ -30,8 +27,8 @@ const sumScores = rounds => rounds
 	.split('\n')
 	.reduce((sum, round) => sum + scoreRound(...round.split(' ')), 0)
 
-console.log(sumScores(eg));
-console.log(sumScores(input));
+console.log('1) eg: ', sumScores(eg));
+console.log('1) input: ', sumScores(input));
 
 // Part 2 ---------------------------------------------------------------------
 
@@ -56,8 +53,8 @@ const sumScores2 = rounds => rounds
 	.split('\n')
 	.reduce((sum, round) => sum + scoreRound2(...round.split(' ')), 0)
 
-console.log(sumScores2(eg));
-console.log(sumScores2(input));
+console.log('2) eg: ', sumScores2(eg));
+console.log('2) input: ', sumScores2(input));
 
 /*
 Wrong guesses:

@@ -84,9 +84,10 @@ const getVisible = grid => grid
 		, 0)
 	, 0)
 
-// console.log(eg);
-// console.log(getColumns(getColumns(getRows(eg))).map(row => row.map(i=> ` ${i} `).join('│')).join('\n───┼───┼───┼───┼───\n'));
-// console.log(showVisibility(checkGrid(eg)));
+console.log(eg, '\n');
+console.log(getColumns(getColumns(getRows(eg))).map(row => row.map(i=> ` ${i} `).join('│')).join('\n───┼───┼───┼───┼───\n'));
+console.log('');
+console.log(showVisibility(checkGrid(eg)), '\n');
 console.log('1) eg: ', getVisible(checkGrid(eg)));
 console.log('1) input: ', getVisible(checkGrid(input)));
 

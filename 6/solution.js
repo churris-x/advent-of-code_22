@@ -24,11 +24,14 @@ const getMarker = buffer => [...buffer].reduce((marker, character, index) => {
 	return '';
 }, '');
 
- console.log(getMarker(eg.split('\n')[0]));
- console.log(getMarker(eg.split('\n')[1]));
- console.log(getMarker(eg.split('\n')[2]));
- console.log(getMarker(eg.split('\n')[3]));
- console.log(getMarker(input));
+console.log(
+	'1) eg: ', 
+ 	getMarker(eg.split('\n')[0]), 
+ 	getMarker(eg.split('\n')[1]),
+	getMarker(eg.split('\n')[2]),
+	getMarker(eg.split('\n')[3]),
+);
+console.log('1) input: ', getMarker(input));
 
 // Part 2 ---------------------------------------------------------------------
 
@@ -42,11 +45,14 @@ const getMessage = buffer => [...buffer].reduce((marker, character, index) => {
 	return '';
 }, '');
 
-console.log(getMessage(eg.split('\n')[0]));
-console.log(getMessage(eg.split('\n')[1]));
-console.log(getMessage(eg.split('\n')[2]));
-console.log(getMessage(eg.split('\n')[3]));
-console.log(getMessage(input));
+console.log(
+	'2) eg: ', 
+ 	getMessage(eg.split('\n')[0]), 
+ 	getMessage(eg.split('\n')[1]),
+	getMessage(eg.split('\n')[2]),
+	getMessage(eg.split('\n')[3]),
+);
+console.log('2) input: ', getMessage(input));
 
 /*
 Wrong guesses:

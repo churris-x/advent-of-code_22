@@ -48,7 +48,7 @@ const getSizeBelowLimit = (folders, limit = 100000) => folders
 	.filter(([path, size]) => size <= limit)
 	.reduce((sum, [path, size]) => sum + size, 0)	
 
- console.log(getTree(eg), '\n\n', getFolderSizes(getTree(eg)), '\n\n');
+console.log(getTree(eg), '\n\n', getFolderSizes(getTree(eg)), '\n\n');
 
 console.log('1) eg: ', getSizeBelowLimit(getFolderSizes(getTree(eg))));
 console.log('1) input: ', getSizeBelowLimit(getFolderSizes(getTree(input))));

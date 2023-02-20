@@ -19,8 +19,8 @@ const findTotalPriority = sacks => sacks
 	.reduce((sum, item) => sum + item, 0);
 
 
-console.log(findTotalPriority(eg));
-console.log(findTotalPriority(input));
+console.log('1) eg: ', findTotalPriority(eg));
+console.log('1) input: ', findTotalPriority(input));
 
 // Part 2 ---------------------------------------------------------------------
 
@@ -43,8 +43,8 @@ const findTotalBadgePriority = groups => groups
 		return [total, [...group, sack]]
 	}, [0, []]);
 
-console.log(findTotalBadgePriority(eg)[0]);
-console.log(findTotalBadgePriority(input)[0]);
+console.log('2) eg: ', findTotalBadgePriority(eg)[0]);
+console.log('2) input: ', findTotalBadgePriority(input)[0]);
 
 /*
 Wrong guesses:
