@@ -6,6 +6,7 @@
   "scripts": {
     "start": "sh scripts/freshInstall.sh",
     "fetch": "sh scripts/fetch.sh",
+    "newDay": "sh scripts/newDay.sh",
     "delete": "sh scripts/delete.sh"
   },
   "repository": {
