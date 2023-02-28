@@ -35,14 +35,16 @@ const input = fs.readFileSync(require.resolve('./input.txt')).toString().slice(0
 
 */
 
+const opposite = {U: 'D', R: 'L', D: 'U', L: 'R'};
+
 const placeholder = moves => moves
 	.split('\n')
 	.map(item => item[0].repeat(item[2]))
 	.join('').split('')
-	.reduce((tiles, move) => {
-		
-		let [x, y] = tiles
-			.slice(-1)[0]
+	.reduce(([distance, prevMove, tiles], move) => {
+
+		let [x, y] = prevMove
+			// .slice(-1)[0]
 			.split(';')
 			.map(i => i | 0);               // parse int
 
@@ -53,11 +55,15 @@ const placeholder = moves => moves
 			case 'L': x--; break;
 		}
 
-		return [...tiles, `${x};${y}`];
-		
-	}, ['0;0'])
-	.filter((tile, index, array) => array.indexOf(tile) === index)
-	.length
+		const position = `${x};${y}`
+
+		if (distance && position.includes(prevMove)) return [1, position, tiles + 1]
+        if (distance && move == opposite[move]) return [0, position, tiles + 1]
+
+		return [1, position, [tiles];
+	}, [0, '0;0', ['0;0']])
+	// .filter((tile, index, array) => array.indexOf(tile) === index)
+	// .length
 
   // console.log('1) eg: ', placeholder('R 4'));
   console.log('1) eg: ', placeholder(eg));
