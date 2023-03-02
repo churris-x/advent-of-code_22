@@ -8,30 +8,18 @@ const input = fs.readFileSync(require.resolve('./input.txt')).toString().slice(0
 
 	save position as []
 
-	== RRRR ==
-	......
-	......
-	......  
-	......
-	TH....
-
-	......
-	......
-	......
-	......
-	sTH...
-
-	......
-	......
-	......
-	......
-	s.TH..
-
-	......
-	......
-	......
-	......
-	s..TH.
+	┌────────┬────────┐
+	│head    │tail    │
+	├────────┼────────┤
+	│        │        │
+	│ 4┌──┐  │ 4 ..   │
+	│ 3│┼┴┼┐ │ 3  ..  │
+	│ 2└─▼├┘ │ 2..►.  │
+	│ 1   │  │ 1   .  │
+	│ 0───┘  │ 0...   │
+	│  01234 │  01234 │
+	│        │        │
+	└────────┴────────┘
 
 */
 
@@ -41,12 +29,12 @@ const placeholder = moves => moves
 	.split('\n')
 	.map(item => item[0].repeat(item[2]))
 	.join('').split('')
-	.reduce(([distance, prevMove, tiles], move) => {
-
-		let [x, y] = prevMove
-			// .slice(-1)[0]
+	.reduce(([distance, tiles], move, index, array) => {
+		const prevPosition = tiles.slice(-1)[0]
+		const prevMove = array[index -1] ?? '';
+		let [x, y] = prevPosition
 			.split(';')
-			.map(i => i | 0);               // parse int
+			.map(i => i | 0);
 
 		switch (move) {
 			case 'U': y++; break;
@@ -57,13 +45,22 @@ const placeholder = moves => moves
 
 		const position = `${x};${y}`
 
-		if (distance && position.includes(prevMove)) return [1, position, tiles + 1]
-        if (distance && move == opposite[move]) return [0, position, tiles + 1]
 
-		return [1, position, [tiles];
-	}, [0, '0;0', ['0;0']])
-	// .filter((tile, index, array) => array.indexOf(tile) === index)
-	// .length
+		if (move.includes(prevMove)) {
+			obj = [1, [...tiles, position]];
+			console.log('same move', obj);
+			return obj
+		}
+        if (distance && move == opposite[prevMove]) {
+        	obj = [0, tiles];
+        	console.log('backwards', obj);
+        	return obj
+        }
+        console.log('diagonal', [1, tiles]);
+		return [1, tiles];
+	}, [0, ['0;0']])[2]
+	   // .filter((tile, index, array) => array.indexOf(tile) === index)
+	   //  .length
 
   // console.log('1) eg: ', placeholder('R 4'));
   console.log('1) eg: ', placeholder(eg));
