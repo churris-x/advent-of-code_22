@@ -22,43 +22,18 @@ const input = fs.readFileSync(require.resolve('./input.txt')).toString().slice(0
 	└─────────────┴─────────────┘
 */
 
-const opposite = {U: 'D', R: 'L', D: 'U', L: 'R'};
+const invert = move => ({U: 'D', R: 'L', D: 'U', L: 'R'}[move]);
 
-// const placeholder = moves => moves
-// 	.split('\n')
-// 	.map(item => item[0].repeat(item[2]))
-// 	.join('').split('')
-// 	.reduce(([distance, tiles], move, index, array) => {
-// 		const prevPosition = tiles.slice(-1)[0]
-// 		const prevMove = array[index -1] ?? '';
-// 		
-// 		let [x, y] = prevPosition
-// 			.split(';')
-// 			.map(i => i | 0);
-// 		switch (move) {
-// 			case 'U': y++; break;
-// 			case 'R': x++; break;
-// 			case 'D': y--; break;
-// 			case 'L': x--; break;
-// 		}
-// 		const position = `${x};${y}`
-// 
-// 
-// 		if (move.includes(prevMove)) {
-// 			obj = [1, [...tiles, position]];
-// 			console.log('same move', obj);
-// 			return obj
-// 		}
-// 		if (distance && move == opposite[prevMove]) {
-// 			obj = [0, tiles];
-// 			console.log('backwards', obj);
-// 			return obj
-// 		}
-// 		console.log('diagonal', [1, tiles]);
-// 		return [1, tiles];
-// 	}, [0, ['0;0']])[2]
-// 	.filter((tile, index, array) => array.indexOf(tile) === index)
-// 	.length
+const getNewPosition = (position, move) => {
+	let [x, y] = Array.from(position);
+	switch (move) {
+		case 'U': y++; break;
+		case 'R': x++; break;
+		case 'D': y--; break;
+		case 'L': x--; break;
+	}
+	return [x, y];
+}
 
 const placeholder = moves => moves
 	.split('\n')
@@ -68,41 +43,24 @@ const placeholder = moves => moves
 		const prevPosition = tiles.slice(-1)[0]
 		const prevMove = array[index -1] ?? '';
 		
-		let [x, y] = prevPosition
-			.split(';')
-			.map(i => i | 0);
-
-		switch (move) {
-			case 'U': y++; break;
-			case 'R': x++; break;
-			case 'D': y--; break;
-			case 'L': x--; break;
-		}
-		const position = `${x};${y}`
-
+		const position = getNewPosition(prevPosition, move)
+		console.log();
 
 		if (move.includes(prevMove)) {
 			obj = [1, [...tiles, position]];
 			console.log('same move', obj);
 			return obj
 		}
-		if (distance && move == opposite[prevMove]) {
+		if (distance && move == invert(prevMove)) {
 			obj = [0, tiles];
 			console.log('backwards', obj);
 			return obj
 		}
 
-		// still WIP
-		switch (prevMove) {
-			case 'U': y++; break;
-			case 'R': x++; break;
-			case 'D': y--; break;
-			case 'L': x--; break;
-		}
 		console.log('diagonal', [1, tiles]);
 		return [1, tiles];
 
-	}, [0, ['0;0']])[2]
+	}, [0, [[0,0]]])[2]
 	// .filter((tile, index, array) => array.indexOf(tile) === index)
 	// .length
 
