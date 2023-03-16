@@ -39,33 +39,24 @@ const placeholder = moves => moves
 	.split('\n')
 	.map(item => item[0].repeat(item[2]))
 	.join('').split('')
-	.reduce(([distance, tiles], move, index, array) => {
-		const prevPosition = tiles.slice(-1)[0]
+	.reduce(([prevHead, tiles], move, index, array) => {
+		const prevTail = tiles.slice(-1)[0]
 		const prevMove = array[index -1] ?? '';
 		
-		const position = getNewPosition(prevPosition, move)
-		console.log();
+		const head = getNewPosition(prevHead, move);
 
-		if (move.includes(prevMove)) {
-			obj = [1, [...tiles, position]];
-			console.log('same move', obj);
-			return obj
-		}
-		if (distance && move == invert(prevMove)) {
-			obj = [0, tiles];
-			console.log('backwards', obj);
-			return obj
-		}
 
-		console.log('diagonal', [1, tiles]);
-		return [1, tiles];
 
-	}, [0, [[0,0]]])[2]
+// 		if (move.includes(prevMove)) return [1, [...tiles, position]]; // straight
+// 
+// 		if (distance && move == invert(prevMove)) return  [0, tiles]; // back
+// 
+// 		return [1, tiles]; // diagonal
+
+	}, [ [0,0], [[0,0]] ])[2]
 	// .filter((tile, index, array) => array.indexOf(tile) === index)
 	// .length
 
-
-  console.log('1) eg: ', placeholder('R 4'));
   console.log('1) eg: ', placeholder(eg));
  // console.log('1) input: ', placeholder(input));
 
