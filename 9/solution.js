@@ -12,19 +12,29 @@ const input = fs.readFileSync(require.resolve('./input.txt')).toString().slice(0
 	│head         │tail         │
 	├─────────────┼─────────────┤
 	│             │             │
-	│ 4 ┌──┐      │ 4  ##       │
-	│ 3 └──┼┐     │ 3   ##      │
-	│ 2 ──>┼┘     │ 2 ## #      │
-	│ 1    │      │ 1    #      │
-	│ 0 ───┘      │ 0 ###       │
-	│   01234     │   01234     │
+	│   012345    │   012345    │
+	│ 4  ┌──┐     │ 4   ##      │
+	│ 3  └──┼┐    │ 3    ##     │
+	│ 2 ──>─┼┘    │ 2  ####     │
+	│ 1     │     │ 1     #     │
+	│ 0 ────┘     │ 0 ####      │
+	│   012345    │   012345    │
 	│             │             │
 	└─────────────┴─────────────┘
-*/
+
+	head
+	example  00 10 20 30 40 41 42 43 44 34 24 14 13 23 33 43 53 52 42 32 22 12 02 12 22
+	function 00 10 20 30 40 41 42 43 44 34 24 14 13 23 33 43 53 52 42 32 22 12 02 12 22
+	
+	tail
+	example 
+	function 
+
+ */
 
 const invert = move => ({U: 'D', R: 'L', D: 'U', L: 'R'}[move]);
 
-const getNewPosition = (position, move) => {
+const movePosition = (move, position) => {
 	let [x, y] = Array.from(position);
 	switch (move) {
 		case 'U': y++; break;
@@ -35,28 +45,31 @@ const getNewPosition = (position, move) => {
 	return [x, y];
 }
 
+const getDistance = (head, tail) => [head[0] - tail[0], head[1] - tail[1]];
+
 const placeholder = moves => moves
 	.split('\n')
 	.map(item => item[0].repeat(item[2]))
 	.join('').split('')
 	.reduce(([prevHead, tiles], move, index, array) => {
 		const prevTail = tiles.slice(-1)[0]
-		const prevMove = array[index -1] ?? '';
+		const prevMove = array[index -1] ?? '';		
 		
-		const head = getNewPosition(prevHead, move);
+		const head = movePosition(move, prevHead );
+		const [dx, dy] = getDistance(head, prevTail);
 
+		console.log({prevHead, tiles, move, head});
 
+		if (dx + dy > 2) return [head, [...tiles, movePosition(move, movePosition(prevMove, prevTail))]];
+		if (dx > 0 || dy > 0) return [head, [...tiles, movePosition(move, prevTail)]];
+		return [head, tiles];
 
-// 		if (move.includes(prevMove)) return [1, [...tiles, position]]; // straight
-// 
-// 		if (distance && move == invert(prevMove)) return  [0, tiles]; // back
-// 
-// 		return [1, tiles]; // diagonal
-
-	}, [ [0,0], [[0,0]] ])[2]
+	}, [ [0,0], [[0,0]] ])[1]
 	// .filter((tile, index, array) => array.indexOf(tile) === index)
 	// .length
 
+
+	// console.log(movePosition('R', [1, 2]));
   console.log('1) eg: ', placeholder(eg));
  // console.log('1) input: ', placeholder(input));
 
