@@ -27,8 +27,8 @@ const input = fs.readFileSync(require.resolve('./input.txt')).toString().slice(0
 	function 00 10 20 30 40 41 42 43 44 34 24 14 13 23 33 43 53 52 42 32 22 12 02 12 22
 	
 	tail
-	example  00 10 20 30 41 42 43 34 24 33 43 32 22 12
-	function 00 10 20 30 40 41 42 43 44 54
+	example  00    10 20 30    41 42 43    34 24          33 43          32 22 12         length = 14, unique 13
+	function 00    10 20 30    41 42 43    34 24          44 64 73 62 42 22 12
 
  */
 
@@ -53,16 +53,25 @@ const placeholder = moves => moves
 	.join('').split('')
 	.reduce(([prevHead, tiles], move, index, array) => {
 		const prevTail = tiles.slice(-1)[0]
-		const prevMove = array[index -1] ?? '';		
+		const prevMove = array[index -1] ?? '';	
+		const anteMove = array[index -2] ?? '';	
 		
 		const head = movePosition(move, prevHead );
 		const [dx, dy] = getDistance(head, prevTail);
 
-		
 
-		if (dx + dy > 2) return [head, [...tiles, movePosition(move, movePosition(prevMove, prevTail))]];
-		if (dx > 1 || dy > 1) return [head, [...tiles, movePosition(move, prevTail)]];
-
+		if (dx + dy > 2) {
+			console.log('diagonal')
+			console.log({prevHead, tiles, move, head, dx});
+			return [head, [...tiles, movePosition(prevMove, movePosition(anteMove, prevTail))]];
+		}
+		if (dx > 1 || dy > 1) {
+			console.log('forward')
+			console.log({prevHead, tiles, move, head, dx});
+			return [head, [...tiles, movePosition(move, prevTail)]];
+		}
+		console.log('no change')
+		console.log({prevHead, tiles, move, head, dx});
 		return [head, tiles];
 
 	}, [ [0,0], [[0,0]] ])[1]
