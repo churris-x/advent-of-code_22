@@ -27,8 +27,8 @@ const input = fs.readFileSync(require.resolve('./input.txt')).toString().slice(0
 	function 00 10 20 30 40 41 42 43 44 34 24 14 13 23 33 43 53 52 42 32 22 12 02 12 22
 	
 	tail
-	example 
-	function 
+	example  00 10 20 30 41 42 43 34 24 33 43 32 22 12
+	function 00 10 20 30 40 41 42 43 44 54
 
  */
 
@@ -45,7 +45,7 @@ const movePosition = (move, position) => {
 	return [x, y];
 }
 
-const getDistance = (head, tail) => [head[0] - tail[0], head[1] - tail[1]];
+const getDistance = (head, tail) => [Math.abs(head[0] - tail[0]), Math.abs(head[1] - tail[1])];
 
 const placeholder = moves => moves
 	.split('\n')
@@ -58,10 +58,11 @@ const placeholder = moves => moves
 		const head = movePosition(move, prevHead );
 		const [dx, dy] = getDistance(head, prevTail);
 
-		console.log({prevHead, tiles, move, head});
+		
 
 		if (dx + dy > 2) return [head, [...tiles, movePosition(move, movePosition(prevMove, prevTail))]];
-		if (dx > 0 || dy > 0) return [head, [...tiles, movePosition(move, prevTail)]];
+		if (dx > 1 || dy > 1) return [head, [...tiles, movePosition(move, prevTail)]];
+
 		return [head, tiles];
 
 	}, [ [0,0], [[0,0]] ])[1]
