@@ -18,7 +18,7 @@ const input = fs.readFileSync(require.resolve('./input.txt')).toString().slice(0
 	│ 3  └──┼┐    │ 3    ##     │
 	│ 2 ──>─┼┘    │ 2  ####     │
 	│ 1     │     │ 1     #     │
-	│ 0 ────┘     │ 0 ####      │
+	│ 0 s───┘     │ 0 ####      │
 	│   012345    │   012345    │
 	│             │             │
 	└─────────────┴─────────────┘
@@ -41,30 +41,33 @@ const movePosition = (move, position) => {
 	return [x, y];
 }
 
-const getDistance = (head, tail) => [Math.abs(head[0] - tail[0]), Math.abs(head[1] - tail[1])];
+const getDistance = (head, tail) => [
+	Math.abs(Math.abs(head[0]) - Math.abs(tail[0])),
+	Math.abs(Math.abs(head[1]) - Math.abs(tail[1]))
+];
 
-const placeholder = moves => moves
-	.split('\n')
-	.map(item => item[0].repeat(item[2]))
-	.join('').split('')
-	.reduce(([prevHead, tiles], move, index, array) => {
-		const prevTail = tiles.slice(-1)[0]
-		const prevMove = array[index -1] ?? '';	
-		
-		const head = movePosition(move, prevHead );
-		const [dx, dy] = getDistance(head, prevTail);
+const getTailMoves = moves => moves
+ 	.split('\n')
+  	.map(item => item[0].repeat(item[2]))
+  	.join('').split('')
+  	.reduce(([prevHead, tiles], move, index, array) => {
+  		const prevTail = tiles.slice(-1)[0]
+  		
+  		const head = movePosition(move, prevHead );
+  		const [dx, dy] = getDistance(head, prevTail);
 
-		if (dx + dy > 2) return [head, [...tiles, movePosition(invert(move), head)]];
-		if (dx > 1 || dy > 1) return [head, [...tiles, movePosition(move, prevTail)]];
-		return [head, tiles];
+  		console.log(dx, dy);
 
-	}, [ [0,0], [[0,0]] ])[1]
+	 	if (dx > 1 || dy > 1) return [head, [...tiles, movePosition(invert(move), head)]];
+  		return [head, tiles];
+  
+  	}, [[0,0], [[0,0]]])[1]
 	.map(item => `${item[0]},${item[1]}`)
 	.filter((tile, index, array) => array.indexOf(tile) === index)
 	.length
 
-	console.log('1) eg: ', placeholder(eg));
-	console.log('1) input: ', placeholder(input));
+	console.log('1) eg: ', getTailMoves(eg));
+	console.log('1) input: ', getTailMoves(input));
 
 // Part 2 ---------------------------------------------------------------------
 
@@ -74,7 +77,10 @@ const placeholder = moves => moves
 /*
 Wrong guesses:
 	1) 3045 too low
-
+	2) 4564 too low
+	2) 5000 too low
+	3) 12000
+	4) 3025
 Correct:
 	1) 
 	2) 
