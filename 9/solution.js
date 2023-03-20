@@ -28,13 +28,15 @@ const input = fs.readFileSync(require.resolve('./input.txt')).toString().slice(0
     tail -> length = 14, unique 13
  */
 
-const movePosition = (move, position, dir = 1) => {
+const invert = move => ({U: 'D', R: 'L', D: 'U', L: 'R'}[move]);
+
+const movePosition = (move, position) => {
 	let [x, y] = position;
 	switch (move) {
-		case 'U': y = y + (1 * dir); break;
-		case 'R': x = x + (1 * dir); break;
-		case 'D': y = y - (1 * dir); break;
-		case 'L': x = x - (1 * dir); break;
+		case 'U': y++; break;
+		case 'R': x++; break;
+		case 'D': y--; break;
+		case 'L': x--; break;
 	}
 	return [x, y];
 }
@@ -52,7 +54,7 @@ const placeholder = moves => moves
 		const head = movePosition(move, prevHead );
 		const [dx, dy] = getDistance(head, prevTail);
 
-		if (dx + dy > 2) return [head, [...tiles, movePosition(move, head, -1)]];
+		if (dx + dy > 2) return [head, [...tiles, movePosition(invert(move), head)]];
 		if (dx > 1 || dy > 1) return [head, [...tiles, movePosition(move, prevTail)]];
 		return [head, tiles];
 
