@@ -6,7 +6,8 @@ const input = fs.readFileSync(require.resolve('./input.txt')).toString().slice(0
 /*
 	This is way more complex than I thought...
 	Ah ok the tail warps on diagonals jesus, prefessor rework here we go
-	save position as []
+	save position as [x, y] and keep track of Head position
+	fucking shit still cannot do it jesus
 
 	┌─────────────┬─────────────┐
 	│head         │tail         │
@@ -22,23 +23,18 @@ const input = fs.readFileSync(require.resolve('./input.txt')).toString().slice(0
 	│             │             │
 	└─────────────┴─────────────┘
 
-	head
-	example  00 10 20 30 40 41 42 43 44 34 24 14 13 23 33 43 53 52 42 32 22 12 02 12 22
-	function 00 10 20 30 40 41 42 43 44 34 24 14 13 23 33 43 53 52 42 32 22 12 02 12 22
-	
-	tail     
-	example  00    10 20 30    41 42 43    34 24          33 43          32 22 12         length = 14, unique 13
+	head 00 10 20 30 40 41 42 43 44 34 24 14 13 23 33 43 53 52 42 32 22 12 02 12 22
+	tail 00    10 20 30    41 42 43    34 24          33 43          32 22 12
+    tail -> length = 14, unique 13
  */
 
-const invert = move => ({U: 'D', R: 'L', D: 'U', L: 'R'}[move]);
-
 const movePosition = (move, position, dir = 1) => {
-	let [x, y] = Array.from(position);
+	let [x, y] = position;
 	switch (move) {
 		case 'U': y = y + (1 * dir); break;
 		case 'R': x = x + (1 * dir); break;
-		case 'D': y= y - (1 * dir); break;
-		case 'L': x= x - (1 * dir); break;
+		case 'D': y = y - (1 * dir); break;
+		case 'L': x = x - (1 * dir); break;
 	}
 	return [x, y];
 }
@@ -56,19 +52,17 @@ const placeholder = moves => moves
 		const head = movePosition(move, prevHead );
 		const [dx, dy] = getDistance(head, prevTail);
 
-
 		if (dx + dy > 2) return [head, [...tiles, movePosition(move, head, -1)]];
 		if (dx > 1 || dy > 1) return [head, [...tiles, movePosition(move, prevTail)]];
 		return [head, tiles];
 
 	}, [ [0,0], [[0,0]] ])[1]
-	// .filter((tile, index, array) => array.indexOf(tile) === index)
-	// .length
+	.map(item => `${item[0]},${item[1]}`)
+	.filter((tile, index, array) => array.indexOf(tile) === index)
+	.length
 
-
-	// console.log(movePosition('R', [1, 2]));
-  console.log('1) eg: ', placeholder(eg));
- // console.log('1) input: ', placeholder(input));
+	console.log('1) eg: ', placeholder(eg));
+	console.log('1) input: ', placeholder(input));
 
 // Part 2 ---------------------------------------------------------------------
 
@@ -77,6 +71,7 @@ const placeholder = moves => moves
 
 /*
 Wrong guesses:
+	1) 3045 too low
 
 Correct:
 	1) 
