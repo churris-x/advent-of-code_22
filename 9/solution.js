@@ -41,10 +41,13 @@ const movePosition = (move, position) => {
 	return [x, y];
 }
 
-const getDistance = (head, tail) => [
-	Math.abs(Math.abs(head[0]) - Math.abs(tail[0])),
-	Math.abs(Math.abs(head[1]) - Math.abs(tail[1]))
-];
+const getDistance = (head, tail) => [head[0] - tail[0], head[1] - tail[1]];
+
+const signum = number => {
+	if (number > 0) return 1;
+	if (number < 0) return -1;
+	return 0;
+}
 
 const getTailMoves = moves => moves
  	.split('\n')
@@ -52,19 +55,26 @@ const getTailMoves = moves => moves
   	.join('').split('')
   	.reduce(([prevHead, tiles], move, index, array) => {
   		const prevTail = tiles.slice(-1)[0]
-  		
+  
   		const head = movePosition(move, prevHead );
   		const [dx, dy] = getDistance(head, prevTail);
 
-  		console.log(dx, dy);
+  		// movePosition(invert(move), head) === prevHead === prevTail +1 +1 
+  		// nothing matters and reality is garbage. I honestly dont have the brain nescessary to do this
+  		// congrats you are a failure
 
-	 	if (dx > 1 || dy > 1) return [head, [...tiles, movePosition(invert(move), head)]];
+	 	if (Math.abs(dx) > 1 || Math.abs(dy) > 1) return [head, tiles.concat([ [prevTail[0] + signum(dx), prevTail[1] + signum(dy)]  ])];
+  		
+	 	console.log(dx, dy, head, prevTail);
   		return [head, tiles];
   
   	}, [[0,0], [[0,0]]])[1]
-	.map(item => `${item[0]},${item[1]}`)
-	.filter((tile, index, array) => array.indexOf(tile) === index)
+	// .map(item => `${item[0]},${item[1]}`)
+	// .filter((tile, index, array) => array.indexOf(tile) === index)
 	.length
+
+
+	// console.log(getDistance([1,1],[2,-2]));
 
 	console.log('1) eg: ', getTailMoves(eg));
 	console.log('1) input: ', getTailMoves(input));
@@ -81,6 +91,7 @@ Wrong guesses:
 	2) 5000 too low
 	3) 12000
 	4) 3025
+	5) 6833
 Correct:
 	1) 
 	2) 
