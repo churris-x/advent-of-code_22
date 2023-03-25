@@ -4,21 +4,31 @@ const input = fs.readFileSync(require.resolve('./input.txt')).toString().slice(0
 
 // Part 1 ---------------------------------------------------------------------
 /*
-	This is way more complex than I thought...
-	Ah ok the tail warps on diagonals jesus, prefessor rework here we go
 	save position as [x, y] and keep track of Head position
-	fucking shit still cannot do it jesus
+	Current status: This works for the example but not the actual
+	puzzle input. There is a logic error hiding somewhere.
+
+	How do I catch it? 
+	maybe its a negative number issue, invert every move of the eg?
+	maybe one of the util functions has an error
+		check switch statement
+	Is my example wrong?
+	Redo whole thing from scratch?
+
+	IT WAS THJE MOFJDTJET SPLIT?????????????????
+
+	I'm done
 
 	┌─────────────┬─────────────┐
 	│head         │tail         │
 	├─────────────┼─────────────┤
 	│             │             │
 	│   012345    │   012345    │
-	│ 4  ┌──┐     │ 4   ##      │
-	│ 3  └──┼┐    │ 3    ##     │
-	│ 2 ──>─┼┘    │ 2  ####     │
-	│ 1     │     │ 1     #     │
-	│ 0 s───┘     │ 0 ####      │
+	│ 4 ·┌──┐·    │ 4 ··##··    │
+	│ 3 ·└──┼┐    │ 3 ···##·    │
+	│ 2 ──>─┼┘    │ 2 ·####·    │
+	│ 1 ····│·    │ 1 ····#·    │
+	│ 0 s───┘·    │ 0 ####··    │
 	│   012345    │   012345    │
 	│             │             │
 	└─────────────┴─────────────┘
@@ -37,47 +47,35 @@ const movePosition = (move, position) => {
 		case 'R': x++; break;
 		case 'D': y--; break;
 		case 'L': x--; break;
+		default: console.log('ERROR');
 	}
 	return [x, y];
 }
 
 const getDistance = (head, tail) => [head[0] - tail[0], head[1] - tail[1]];
 
-const signum = number => {
-	if (number > 0) return 1;
-	if (number < 0) return -1;
-	return 0;
-}
-
 const getTailMoves = moves => moves
  	.split('\n')
-  	.map(item => item[0].repeat(item[2]))
+  	.map(item => item[0].repeat(item.split(' ')[1])) // HERERERE 
   	.join('').split('')
   	.reduce(([prevHead, tiles], move, index, array) => {
+
   		const prevTail = tiles.slice(-1)[0]
-  
-  		const head = movePosition(move, prevHead );
+  		const head = movePosition(move, prevHead);
   		const [dx, dy] = getDistance(head, prevTail);
 
-  		// movePosition(invert(move), head) === prevHead === prevTail +1 +1 
-  		// nothing matters and reality is garbage. I honestly dont have the brain nescessary to do this
-  		// congrats you are a failure
+	 	if (Math.abs(dx) > 1 || Math.abs(dy) > 1) return [head, [...tiles, prevHead]];
 
-	 	if (Math.abs(dx) > 1 || Math.abs(dy) > 1) return [head, tiles.concat([ [prevTail[0] + signum(dx), prevTail[1] + signum(dy)]  ])];
-  		
-	 	console.log(dx, dy, head, prevTail);
   		return [head, tiles];
   
   	}, [[0,0], [[0,0]]])[1]
-	// .map(item => `${item[0]},${item[1]}`)
-	// .filter((tile, index, array) => array.indexOf(tile) === index)
+	.map(item => `${item[0]},${item[1]}`)
+	.filter((tile, index, array) => array.indexOf(tile) === index)
 	.length
 
 
-	// console.log(getDistance([1,1],[2,-2]));
-
-	console.log('1) eg: ', getTailMoves(eg));
-	console.log('1) input: ', getTailMoves(input));
+console.log('1) eg: ', getTailMoves(eg));
+console.log('1) input: ', getTailMoves(input));
 
 // Part 2 ---------------------------------------------------------------------
 
@@ -93,6 +91,6 @@ Wrong guesses:
 	4) 3025
 	5) 6833
 Correct:
-	1) 
+	1) 6067
 	2) 
 */
