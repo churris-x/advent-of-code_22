@@ -4,20 +4,7 @@ const input = fs.readFileSync(require.resolve('./input.txt')).toString().slice(0
 
 // Part 1 ---------------------------------------------------------------------
 /*
-	save position as [x, y] and keep track of Head position
-	Current status: This works for the example but not the actual
-	puzzle input. There is a logic error hiding somewhere.
-
-	How do I catch it? 
-	maybe its a negative number issue, invert every move of the eg?
-	maybe one of the util functions has an error
-		check switch statement
-	Is my example wrong?
-	Redo whole thing from scratch?
-
-	IT WAS THJE MOFJDTJET SPLIT?????????????????
-
-	I'm done
+	Save position as [x, y] and keep track of Head position
 
 	┌─────────────┬─────────────┐
 	│head         │tail         │
@@ -38,7 +25,7 @@ const input = fs.readFileSync(require.resolve('./input.txt')).toString().slice(0
     tail -> length = 14, unique 13
  */
 
-const invert = move => ({U: 'D', R: 'L', D: 'U', L: 'R'}[move]);
+const invert = move => ({ U: 'D', R: 'L', D: 'U', L: 'R' }[move]);
 
 const movePosition = (move, position) => {
 	let [x, y] = position;
@@ -47,7 +34,6 @@ const movePosition = (move, position) => {
 		case 'R': x++; break;
 		case 'D': y--; break;
 		case 'L': x--; break;
-		default: console.log('ERROR');
 	}
 	return [x, y];
 }
@@ -56,18 +42,21 @@ const getDistance = (head, tail) => [head[0] - tail[0], head[1] - tail[1]];
 
 const getTailMoves = moves => moves
  	.split('\n')
-  	.map(item => item[0].repeat(item.split(' ')[1])) // HERERERE 
+  	.map(item => item[0].repeat(item.split(' ')[1]))
   	.join('').split('')
   	.reduce(([prevHead, tiles], move, index, array) => {
-
   		const prevTail = tiles.slice(-1)[0]
+  		
   		const head = movePosition(move, prevHead);
-  		const [dx, dy] = getDistance(head, prevTail);
 
-	 	if (Math.abs(dx) > 1 || Math.abs(dy) > 1) return [head, [...tiles, prevHead]];
+  		const [dx, dy] = getDistance(head, prevTail)
+  			.map(i => Math.abs(i));
+
+	 	if (dx > 1 || dy > 1) {
+	 		return [head, [...tiles, movePosition(invert(move), head)]];
+	 	}
 
   		return [head, tiles];
-  
   	}, [[0,0], [[0,0]]])[1]
 	.map(item => `${item[0]},${item[1]}`)
 	.filter((tile, index, array) => array.indexOf(tile) === index)
