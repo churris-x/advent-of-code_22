@@ -63,13 +63,23 @@ const getTailMoves = moves => moves
 	.length
 
 
-console.log('1) eg: ', getTailMoves(eg));
-console.log('1) input: ', getTailMoves(input));
+console.log('1) eg: ', getTailMoves(eg.split('\n').slice(0, 8).join('\n')));
+ console.log('1) input: ', getTailMoves(input));
 
 // Part 2 ---------------------------------------------------------------------
 
-// console.log('2) eg: ', placeholder(eg));
-// console.log('2) input: ', placeholder(input));
+const largeEg = eg.split('\n').slice(9, 17).join('\n');
+
+ const getRopeMoves = moves => moves
+	.split('\n')
+  	.map(item => item[0].repeat(item.split(' ')[1]))
+  	.join('').split('')
+  	.reduce(([prevKnots, tiles], move) => {
+  		return [prevKnots, tiles]
+  	}, [[...Array(9).map(i => [0,0])], [[0,0]] ]);
+
+ console.log('2) eg: ', getRopeMoves(largeEg));
+ // console.log('2) input: ', getRopeMoves(input));
 
 /*
 Wrong guesses:
