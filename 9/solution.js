@@ -67,6 +67,15 @@ console.log('1) eg: ', getTailMoves(eg.split('\n').slice(0, 8).join('\n')));
  console.log('1) input: ', getTailMoves(input));
 
 // Part 2 ---------------------------------------------------------------------
+/*
+	ok the idea is that there are now more knots, the one previous is the head
+	for the next one.
+
+	Need a function that will update all positions respectively.
+	knots = prevKnows, move => stuff
+
+	Should I add the tail to that? it's similar behaviour...
+*/
 
 const largeEg = eg.split('\n').slice(9, 17).join('\n');
 
@@ -75,8 +84,10 @@ const largeEg = eg.split('\n').slice(9, 17).join('\n');
   	.map(item => item[0].repeat(item.split(' ')[1]))
   	.join('').split('')
   	.reduce(([prevKnots, tiles], move) => {
-  		return [prevKnots, tiles]
-  	}, [[...Array(9).map(i => [0,0])], [[0,0]] ]);
+
+
+  		return [prevKnots, tiles];
+  	}, [[...Array(9)].map(i => [0,0]), [[0,0]] ]);
 
  console.log('2) eg: ', getRopeMoves(largeEg));
  // console.log('2) input: ', getRopeMoves(input));
