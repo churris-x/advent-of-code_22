@@ -53,7 +53,7 @@ const getTailMoves = moves => moves
   			.map(i => Math.abs(i));
 
 	 	if (dx > 1 || dy > 1) {
-	 		return [head, [...tiles, movePosition(invert(move), head)]];
+	 		return [head, [...tiles, prevHead]];
 	 	}
 
   		return [head, tiles];
@@ -63,8 +63,8 @@ const getTailMoves = moves => moves
 	.length
 
 
-console.log('1) eg: ', getTailMoves(eg.split('\n').slice(0, 8).join('\n')));
- console.log('1) input: ', getTailMoves(input));
+// console.log('1) eg: ', getTailMoves(eg.split('\n').slice(0, 8).join('\n')));
+// console.log('1) input: ', getTailMoves(input));
 
 // Part 2 ---------------------------------------------------------------------
 /*
@@ -79,17 +79,34 @@ console.log('1) eg: ', getTailMoves(eg.split('\n').slice(0, 8).join('\n')));
 
 const largeEg = eg.split('\n').slice(9, 17).join('\n');
 
- const getRopeMoves = moves => moves
+const updateKnots = (knots, move) => knots.reduce((rope, knot, index) => {
+ 	const head = rope[0];
+ 	if (!head) return [movePosition(move, knot)];
+
+	const [dx, dy] = getDistance(head, knot).map(i => Math.abs(i));
+
+ 	if (dx > 1 || dy > 1) return [...rope, knots[index -1]];
+ 	return [...rope, knot];
+ }, []);
+// console.log(updateKnots([[0,4], [0,3], [0,2]], 'U'));
+
+
+const getRopeMoves = moves => moves
 	.split('\n')
   	.map(item => item[0].repeat(item.split(' ')[1]))
   	.join('').split('')
   	.reduce(([prevKnots, tiles], move) => {
+  		const prevTail = tiles.slice(-1)[0]
 
+  		const knots = updateKnots([...prevKnots, prevTail], move);
+  		
+  		return [knots.slice(0, -1), [...tiles, knots.slice(-1)[0]]];
+  	}, [[...Array(9)].map(i => [0,0]), [[0,0]] ])[1]
+	.map(item => `${item[0]},${item[1]}`)
+	.filter((tile, index, array) => array.indexOf(tile) === index)
+	.length
 
-  		return [prevKnots, tiles];
-  	}, [[...Array(9)].map(i => [0,0]), [[0,0]] ]);
-
- console.log('2) eg: ', getRopeMoves(largeEg));
+  console.log('2) eg: ', getRopeMoves(largeEg));
  // console.log('2) input: ', getRopeMoves(input));
 
 /*
