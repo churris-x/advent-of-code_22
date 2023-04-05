@@ -79,13 +79,15 @@ const getTailMoves = moves => moves
 
 const largeEg = eg.split('\n').slice(9, 17).join('\n');
 
-const updateKnots = (knots, move) => knots.reduce((rope, knot, index) => {
+const updateKnots = (knots, move) => knots.reduce((rope, knot, index, array) => {
  	const head = rope[0];
  	if (!head) return [movePosition(move, knot)];
 
 	const [dx, dy] = getDistance(head, knot).map(i => Math.abs(i));
 
- 	if (dx > 1 || dy > 1) return [...rope, knots[index -1]];
+	console.log(index, dy, dx);
+
+ 	if (dx > 1 || dy > 1) return [...rope, array[index -1]];
  	return [...rope, knot];
  }, []);
 
@@ -107,7 +109,6 @@ const getRopeMoves = moves => moves
 
   		
   		const knots = updateKnots([...prevKnots, prevTail], move);
-  		console.log([...tiles, knots.slice(-1)[0]]);
   		
   		return [knots.slice(0, -1), [...tiles, knots.slice(-1)[0]]];
   	}, [[...Array(9)].map(i => [0,0]), [[0,0]] ])[1]
@@ -115,7 +116,8 @@ const getRopeMoves = moves => moves
 	// .filter((tile, index, array) => array.indexOf(tile) === index)
 	// .length
 
-   console.log('2) eg: ', getRopeMoves(largeEg));
+   console.log('2) eg: ', getRopeMoves(eg.split('\n').slice(0, 8).join('\n')));
+   // console.log('2) large eg: ', getRopeMoves(largeEg));
  // console.log('2) input: ', getRopeMoves(input));
 
 /*
