@@ -84,13 +84,11 @@ const updateKnots = (knots, move) => knots.reduce((rope, knot, index) => {
  	const head = rope[index -1];
  	if (!head) return [movePosition(move, knot)];
 
-	const [dx, dy] = getDistance(head, knot).map(i => Math.abs(i));
+	const [dx, dy] = getDistance(head, knot);
 
-	console.log(JSON.stringify(rope));
-
- 	if (dx > 1 || dy > 1) return [
+ 	if (Math.abs(dx) > 1 || Math.abs(dy) > 1) return [
  		...rope, 
-		movePosition(invert(move), head)
+ 		[knot[0] + Math.sign(dx), knot[1] + Math.sign(dy)]
  	];
  	
  	return [...rope, knot];
@@ -102,29 +100,28 @@ const getRopeMoves = moves => moves
   	.join('').split('')
   	.reduce(([prevKnots, tiles], move) => {
   		const prevTail = tiles.slice(-1)[0]
-
   		
   		const knots = updateKnots([...prevKnots, prevTail], move);
   		
   		return [knots.slice(0, -1), [...tiles, knots.slice(-1)[0]]];
   	}, [[...Array(9)].map(i => [0,0]), [[0,0]] ])[1]
-	 .map(item => `${item[0]},${item[1]}`)
-	 .filter((tile, index, array) => array.indexOf(tile) === index)
-	 .length
+	  .map(item => `${item[0]},${item[1]}`)
+	  .filter((tile, index, array) => array.indexOf(tile) === index)
+	  .length
 
-   console.log('2) eg: ', getRopeMoves(eg.split('\n').slice(0, 8).join('\n')));
-   // console.log('2) large eg: ', getRopeMoves(largeEg));
- // console.log('2) input: ', getRopeMoves(input));
+	console.log('2) eg: ', getRopeMoves(eg.split('\n').slice(0, 8).join('\n')));
+	console.log('2) large eg: ', getRopeMoves(largeEg));
+	console.log('2) input: ', getRopeMoves(input));
 
 /*
 Wrong guesses:
 	1) 3045 too low
-	2) 4564 too low
-	2) 5000 too low
-	3) 12000
-	4) 3025
-	5) 6833
+	1) 4564 too low
+	1) 5000 too low
+	1) 12000
+	1) 3025
+	1) 6833
 Correct:
 	1) 6067
-	2) 
+	2) 2471
 */
