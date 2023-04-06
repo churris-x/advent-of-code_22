@@ -74,31 +74,27 @@ const getTailMoves = moves => moves
 	Need a function that will update all positions respectively.
 	knots = prevKnows, move => stuff
 
-	Should I add the tail to that? it's similar behaviour...
+	ok I think I know the issue here, when the rope was a "knot" or a loop, the
+	behaviour changes
 */
 
 const largeEg = eg.split('\n').slice(9, 17).join('\n');
 
-const updateKnots = (knots, move) => knots.reduce((rope, knot, index, array) => {
- 	const head = rope[0];
+const updateKnots = (knots, move) => knots.reduce((rope, knot, index) => {
+ 	const head = rope[index -1];
  	if (!head) return [movePosition(move, knot)];
 
 	const [dx, dy] = getDistance(head, knot).map(i => Math.abs(i));
 
-	console.log(index, dy, dx);
+	console.log(JSON.stringify(rope));
 
- 	if (dx > 1 || dy > 1) return [...rope, array[index -1]];
+ 	if (dx > 1 || dy > 1) return [
+ 		...rope, 
+		movePosition(invert(move), head)
+ 	];
+ 	
  	return [...rope, knot];
  }, []);
-
-//  console.log(
-//  	updateKnots(
-//  	updateKnots(
-//  	updateKnots([[0,4], [0,3], [0,2]], 'D')
-//  	, 'D')
-//  	, 'D')
-// );
-
 
 const getRopeMoves = moves => moves
 	.split('\n')
@@ -112,9 +108,9 @@ const getRopeMoves = moves => moves
   		
   		return [knots.slice(0, -1), [...tiles, knots.slice(-1)[0]]];
   	}, [[...Array(9)].map(i => [0,0]), [[0,0]] ])[1]
-	// .map(item => `${item[0]},${item[1]}`)
-	// .filter((tile, index, array) => array.indexOf(tile) === index)
-	// .length
+	 .map(item => `${item[0]},${item[1]}`)
+	 .filter((tile, index, array) => array.indexOf(tile) === index)
+	 .length
 
    console.log('2) eg: ', getRopeMoves(eg.split('\n').slice(0, 8).join('\n')));
    // console.log('2) large eg: ', getRopeMoves(largeEg));
