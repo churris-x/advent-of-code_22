@@ -25,8 +25,6 @@ const input = fs.readFileSync(require.resolve('./input.txt')).toString().slice(0
     tail -> length = 14, unique 13
  */
 
-const invert = move => ({ U: 'D', R: 'L', D: 'U', L: 'R' }[move]);
-
 const movePosition = (move, position) => {
 	let [x, y] = position;
 	switch (move) {
@@ -63,8 +61,8 @@ const getTailMoves = moves => moves
 	.length
 
 
-// console.log('1) eg: ', getTailMoves(eg.split('\n').slice(0, 8).join('\n')));
-// console.log('1) input: ', getTailMoves(input));
+console.log('1) eg: ', getTailMoves(eg.split('\n').slice(0, 8).join('\n')));
+console.log('1) input: ', getTailMoves(input));
 
 // Part 2 ---------------------------------------------------------------------
 /*
@@ -74,9 +72,17 @@ const getTailMoves = moves => moves
 	Need a function that will update all positions respectively.
 	knots = prevKnows, move => stuff
 
-	ok I think I know the issue here, when the rope was a "knot" or a loop, the
-	behaviour changes
+	Update from the previous position, not the position of the previous one
+
+	I'm basically doing some vector maths, should be able to refactor this
 */
+
+const moveValue = move => ({ 
+	U: [0, 1],
+	R: [1, 0],
+	D: [0, -1],
+	L: [-1, 0] 
+}[move]);
 
 const largeEg = eg.split('\n').slice(9, 17).join('\n');
 
@@ -109,9 +115,9 @@ const getRopeMoves = moves => moves
 	  .filter((tile, index, array) => array.indexOf(tile) === index)
 	  .length
 
-	console.log('2) eg: ', getRopeMoves(eg.split('\n').slice(0, 8).join('\n')));
-	console.log('2) large eg: ', getRopeMoves(largeEg));
-	console.log('2) input: ', getRopeMoves(input));
+console.log('2) eg: ', getRopeMoves(eg.split('\n').slice(0, 8).join('\n')));
+console.log('2) large eg: ', getRopeMoves(largeEg));
+console.log('2) input: ', getRopeMoves(input));
 
 /*
 Wrong guesses:
