@@ -19,6 +19,23 @@ X    11144
 c    12345
     [-----]
 */
+
+const smallEg = `noop
+addx 3
+addx -5`;
+
+const cycles = op => ({noop: 1, addx: 2}[op]);
+
+const placeholder = ops => ops
+    .split('\n')
+    .map(item => item.split(' '))
+    .reduce(() => {
+
+
+    }, []);
+
+
+console.log('1) eg: ', placeholder(smallEg));
 // console.log('1) eg: ', placeholder(eg));
 // console.log('1) input: ', placeholder(input));
 
