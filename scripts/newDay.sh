@@ -2,8 +2,8 @@
 
 DAY=$1
 if [ -z "$1" ]; then
-	read -p 'Day: ' day
-	DAY=$day;
+    read -p 'Day: ' day
+    DAY=$day;
 fi;
 
 mkdir $DAY || exit 

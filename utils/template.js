@@ -16,6 +16,6 @@ const input = fs.readFileSync(require.resolve('./input.txt')).toString().slice(0
 Wrong guesses:
 
 Correct:
-	1) 
-	2) 
+    1) 
+    2) 
 */

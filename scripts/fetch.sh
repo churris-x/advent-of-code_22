@@ -6,8 +6,8 @@
 # If no days are passed, prompt user
 DAYS=$@;
 if [ -z "$1" ]; then
-	read -p 'Days: ' days
-	DAYS=$days;
+    read -p 'Days: ' days
+    DAYS=$days;
 fi;
 
 echo $DAYS |
