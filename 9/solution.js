@@ -25,6 +25,9 @@ const input = fs.readFileSync(require.resolve('./input.txt')).toString().slice(0
     tail -> length = 14, unique 13
  */
 
+const sign = number => +number ? number > 0 ? 1 : -1 : +number;
+const abs = number => number < 0 ? -1 * number : number;
+
 const movePosition = (move, position) => {
 	let [x, y] = position;
 	switch (move) {
@@ -44,15 +47,10 @@ const getTailMoves = moves => moves
   	.join('').split('')
   	.reduce(([prevHead, tiles], move, index, array) => {
   		const prevTail = tiles.slice(-1)[0]
-  		
   		const head = movePosition(move, prevHead);
+  		const [dx, dy] = getDistance(head, prevTail);
 
-  		const [dx, dy] = getDistance(head, prevTail)
-  			.map(i => Math.abs(i));
-
-	 	if (dx > 1 || dy > 1) {
-	 		return [head, [...tiles, prevHead]];
-	 	}
+	 	if (abs(dx) > 1 || abs(dy) > 1) return [head, [...tiles, prevHead]];
 
   		return [head, tiles];
   	}, [[0,0], [[0,0]]])[1]
@@ -65,24 +63,6 @@ console.log('1) eg: ', getTailMoves(eg.split('\n').slice(0, 8).join('\n')));
 console.log('1) input: ', getTailMoves(input));
 
 // Part 2 ---------------------------------------------------------------------
-/*
-	ok the idea is that there are now more knots, the one previous is the head
-	for the next one.
-
-	Need a function that will update all positions respectively.
-	knots = prevKnows, move => stuff
-
-	Update from the previous position, not the position of the previous one
-
-	I'm basically doing some vector maths, should be able to refactor this
-*/
-
-const moveValue = move => ({ 
-	U: [0, 1],
-	R: [1, 0],
-	D: [0, -1],
-	L: [-1, 0] 
-}[move]);
 
 const largeEg = eg.split('\n').slice(9, 17).join('\n');
 
@@ -92,9 +72,9 @@ const updateKnots = (knots, move) => knots.reduce((rope, knot, index) => {
 
 	const [dx, dy] = getDistance(head, knot);
 
- 	if (Math.abs(dx) > 1 || Math.abs(dy) > 1) return [
- 		...rope, 
- 		[knot[0] + Math.sign(dx), knot[1] + Math.sign(dy)]
+ 	if (abs(dx) > 1 || abs(dy) > 1) return [
+ 		...rope,
+ 		[knot[0] + sign(dx), knot[1] + sign(dy)]
  	];
  	
  	return [...rope, knot];
@@ -110,6 +90,7 @@ const getRopeMoves = moves => moves
   		const knots = updateKnots([...prevKnots, prevTail], move);
   		
   		return [knots.slice(0, -1), [...tiles, knots.slice(-1)[0]]];
+
   	}, [[...Array(9)].map(i => [0,0]), [[0,0]] ])[1]
 	  .map(item => `${item[0]},${item[1]}`)
 	  .filter((tile, index, array) => array.indexOf(tile) === index)
