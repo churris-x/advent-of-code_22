@@ -18,6 +18,10 @@ const input = fs.readFileSync(require.resolve('./input.txt')).toString().slice(0
 X    11144
 c    12345
     [-----]
+
+    crap i'm going to have to to some recursion methinks
+    I need to add 1 cycle and check, add 1 and check untill it gets to value
+    I might have to do a for loop
 */
 
 const smallEg = `noop
@@ -29,14 +33,31 @@ const cycles = op => ({noop: 1, addx: 2}[op]);
 const placeholder = ops => ops
     .split('\n')
     .map(item => item.split(' '))
-    .reduce(() => {
+    .reduce(([clock, x, totalStrength], [op, value = 0]) => {
+        if (isNaN(value)) throw 'value is nan';
+
+        const newClock = clock + cycles(op);
+        let strength = 0;
 
 
-    }, []);
+        // check for cycle value and strength
+        for (; clock < newClock; clock++) {
+
+            console.log(op, clock, x);
+
+            if ((clock - 20) % 40 === 0) {
+                console.log(clock, x, x * clock);
+                strength = x * clock
+            }
+        }
+
+        return [newClock, x + Number(value), totalStrength + strength];
+
+    }, [0, 1, 0]);
 
 
-console.log('1) eg: ', placeholder(smallEg));
-// console.log('1) eg: ', placeholder(eg));
+// console.log('1) eg: ', placeholder(smallEg));
+console.log('1) eg: ', placeholder(eg));
 // console.log('1) input: ', placeholder(input));
 
 // Part 2 ---------------------------------------------------------------------
