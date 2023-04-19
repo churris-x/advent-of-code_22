@@ -26,7 +26,7 @@ addx -5`;
 
 const cycles = op => ({noop: 1, addx: 2}[op]);
 
-const placeholder = ops => ops
+const signalStrength20hz = ops => ops
     .split('\n')
     .map(item => item.split(' '))
     .reduce(([clock, x, totalStrength], [op, value = 0]) => {
@@ -50,11 +50,29 @@ const placeholder = ops => ops
     }, [1, 1, 0]);
 
 
-// console.log('1) eg: ', placeholder(smallEg));
-console.log('1) eg: ', placeholder(eg));
-console.log('1) input: ', placeholder(input));
+// console.log('1) eg: ', signalStrength20hz(smallEg));
+console.log('1) eg: ', signalStrength20hz(eg));
+console.log('1) input: ', signalStrength20hz(input));
 
 // Part 2 ---------------------------------------------------------------------
+/*
+    Ok this is going ot be quite tough, I still don't what is required of me
+
+    1) The X register controls the center position of a "###" sprite
+    eg:
+    X = 0     X = 1    X = 2
+    |#    |   |##   |  |###  |
+
+    2) the crt has its own cycle, every row has 40 pixels, with position 0 to 39
+    with 6 rows for a total of 240 pixels
+
+    3) if the crt is drawing a pixel and at that exact moment there should be
+    part of the sprite there, it is drawn.
+
+
+
+*/
+
 
 // console.log('2) eg: ', placeholder(eg));
 // console.log('2) input: ', placeholder(input));
