@@ -26,7 +26,7 @@ addx -5`;
 
 const cycles = op => ({noop: 1, addx: 2}[op]);
 
-const signalStrength20hz = ops => ops
+const signalStrength40hz = ops => ops
     .split('\n')
     .map(item => item.split(' '))
     .reduce(([clock, x, totalStrength], [op, value = 0]) => {
@@ -35,7 +35,6 @@ const signalStrength20hz = ops => ops
         const newClock = clock + cycles(op);
         const newX = x + Number(value);
         let strength = 0;
-
 
         // check for cycle value and strength
         for (; clock < newClock; clock++) {
@@ -50,9 +49,9 @@ const signalStrength20hz = ops => ops
     }, [1, 1, 0]);
 
 
-// console.log('1) eg: ', signalStrength20hz(smallEg));
-console.log('1) eg: ', signalStrength20hz(eg));
-console.log('1) input: ', signalStrength20hz(input));
+// console.log('1) eg: ', signalStrength40hz(smallEg));
+// console.log('1) eg: ', signalStrength40hz(eg));
+// console.log('1) input: ', signalStrength40hz(input));
 
 // Part 2 ---------------------------------------------------------------------
 /*
@@ -69,13 +68,26 @@ console.log('1) input: ', signalStrength20hz(input));
     3) if the crt is drawing a pixel and at that exact moment there should be
     part of the sprite there, it is drawn.
 
-
-
+    Ideas:
+    detectning the current pixel is tricky, especially with the overflow
+    make an array(240), index the cycle count
+    make function to split array into rows and print the chars
+    a pixel is lit if x is either: pixel index, -1, or +1
 */
 
+const drawPixels = () => {
+    const screen = [...Array(20)].map(i => '.');
+    return screen;
+};
 
-// console.log('2) eg: ', placeholder(eg));
-// console.log('2) input: ', placeholder(input));
+const printScreen = screen => screen.reduce(([rows, print], pixel) => {
+    // if (print.length === 40) r
+
+    print.concat(pixel)
+}, [[], '']);
+
+console.log('2) eg: ', drawPixels(eg));
+// console.log('2) input: ', drawPixels(input));
 
 /*
 Wrong guesses:
