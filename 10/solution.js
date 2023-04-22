@@ -57,10 +57,12 @@ const signalStrength40hz = ops => ops
 /*
     Ok this is going ot be quite tough, I still don't what is required of me
 
-    1) The X register controls the center position of a "###" sprite
+    1) The X register controls the center position of a "###" sprite.
     eg:
-    X = 0     X = 1    X = 2
-    |#    |   |##   |  |###  |
+
+    X = 1       X = 2      X = 3
+    |###....|   |.###...|  |..###..|
+pos  0123456     0123456    0123456
 
     2) the crt has its own cycle, every row has 40 pixels, with position 0 to 39
     with 6 rows for a total of 240 pixels
@@ -75,19 +77,26 @@ const signalStrength40hz = ops => ops
     a pixel is lit if x is either: pixel index, -1, or +1
 */
 
+const borderBottom = `┌${'─'.repeat(39)}┐`
+const borderTop = `\n└${'─'.repeat(39)}┘`
+
 const drawPixels = () => {
-    const screen = [...Array(20)].map(i => '.');
+    const screen = [...Array(240)].map(i => '.');
     return screen;
 };
 
-const printScreen = screen => screen.reduce(([rows, print], pixel) => {
-    // if (print.length === 40) r
+const printScreen = screen => screen.reduce(([rows, line], pixel) => {
+    const newLine = line.concat(pixel);
 
-    print.concat(pixel)
-}, [[], '']);
+    if (newLine.length === 40) return [`${rows}\n${newLine}│`, '│'];
+    return [rows, newLine];
+}, [borderBottom, '│'])[0].concat(borderTop);
 
-console.log('2) eg: ', drawPixels(eg));
-// console.log('2) input: ', drawPixels(input));
+
+console.log('2) eg: ');
+console.log(printScreen(drawPixels(eg)));
+// console.log('2) input: ');
+// console.log(printScreen(drawPixels(input)));
 
 /*
 Wrong guesses:
