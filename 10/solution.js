@@ -75,22 +75,45 @@ pos  0123456     0123456    0123456
     make an array(240), index the cycle count
     make function to split array into rows and print the chars
     a pixel is lit if x is either: pixel index, -1, or +1
+
+
+    screen = ['.', '.', '#' ].length == 240
 */
 
-const borderBottom = `┌${'─'.repeat(39)}┐`
-const borderTop = `\n└${'─'.repeat(39)}┘`
-
-const drawPixels = () => {
+const drawPixels = ops => {
     const screen = [...Array(240)].map(i => '.');
+
+    ops
+    .split('\n')
+    .map(item => item.split(' '))
+    .reduce(([clock, x], [op, value = 0]) => {
+
+        const newClock = clock + cycles(op);
+        const newX = x + Number(value);
+
+        // check for cycle value and strength
+        for (; clock < newClock; clock++) {
+            console.log(clock % 40, x, clock % 40 === x, clock % 40 === x + 1, clock % 40 === x - 1);
+            if (clock % 40 === x || clock % 40 === x + 1 || clock % 40 === x - 1 ) {
+                screen[clock -1] = '#'
+            }
+        }
+
+        return [newClock, newX];
+    }, [1, 1]);
+
     return screen;
 };
+
+const borderTop = `┌${'─'.repeat(39)}┐`;
+const borderBottom = `\n└${'─'.repeat(39)}┘`;
 
 const printScreen = screen => screen.reduce(([rows, line], pixel) => {
     const newLine = line.concat(pixel);
 
     if (newLine.length === 40) return [`${rows}\n${newLine}│`, '│'];
     return [rows, newLine];
-}, [borderBottom, '│'])[0].concat(borderTop);
+}, [borderTop, '│'])[0].concat(borderBottom);
 
 
 console.log('2) eg: ');
