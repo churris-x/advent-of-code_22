@@ -3,26 +3,6 @@ const eg = fs.readFileSync(require.resolve('./eg.txt')).toString().slice(0, -1);
 const input = fs.readFileSync(require.resolve('./input.txt')).toString().slice(0, -1);
 
 // Part 1 ---------------------------------------------------------------------
-/*
-    clock with cycles
-    X register initial X = 1
-    addx V (2 cycles) => X + V
-    noop (1 cycle) => {}
-    signal strength = cycle * X
-    {20, 60, 100, 140, 180, 220} [......] 20 + 40
-
-    noop      1
-    addx 3    2
-    addx -5   2
-
-X    11144
-c    12345
-    [-----]
-*/
-
-const smallEg = `noop
-addx 3
-addx -5`;
 
 const cycles = op => ({noop: 1, addx: 2}[op]);
 
@@ -30,8 +10,6 @@ const signalStrength40hz = ops => ops
     .split('\n')
     .map(item => item.split(' '))
     .reduce(([clock, x, totalStrength], [op, value = 0]) => {
-        if (isNaN(value)) throw 'value is nan';
-
         const newClock = clock + cycles(op);
         const newX = x + Number(value);
         let strength = 0;
@@ -39,19 +17,18 @@ const signalStrength40hz = ops => ops
         // check for cycle value and strength
         for (; clock < newClock; clock++) {
             if ((clock - 20) % 40 === 0) {
-                console.log(clock, x, x * clock);
                 strength = x * clock
+                // console.log({clock, x, str: strength});
             }
         }
 
         return [newClock, newX, totalStrength + strength];
 
-    }, [1, 1, 0]);
+    }, [1, 1, 0])[2];
 
 
-// console.log('1) eg: ', signalStrength40hz(smallEg));
-// console.log('1) eg: ', signalStrength40hz(eg));
-// console.log('1) input: ', signalStrength40hz(input));
+console.log('1) eg: ', signalStrength40hz(eg));
+console.log('1) input: ', signalStrength40hz(input));
 
 // Part 2 ---------------------------------------------------------------------
 /*
@@ -71,13 +48,9 @@ pos  0123456     0123456    0123456
     part of the sprite there, it is drawn.
 
     Ideas:
-    detectning the current pixel is tricky, especially with the overflow
+    a pixel is lit if x is either: pixel index, -1, or +1
     make an array(240), index the cycle count
     make function to split array into rows and print the chars
-    a pixel is lit if x is either: pixel index, -1, or +1
-
-
-    screen = ['.', '.', '#' ].length == 240
 */
 
 const drawPixels = ops => {
@@ -87,26 +60,27 @@ const drawPixels = ops => {
     .split('\n')
     .map(item => item.split(' '))
     .reduce(([clock, x], [op, value = 0]) => {
-
         const newClock = clock + cycles(op);
         const newX = x + Number(value);
 
-        // check for cycle value and strength
         for (; clock < newClock; clock++) {
             const pos = clock -1;
-            if (pos % 40 === x || pos % 40 === x + 1 || pos % 40 === x - 1 ) {
+
+            if (
+                pos % 40 === x ||
+                pos % 40 === x + 1 ||
+                pos % 40 === x - 1
+            ) {
                 screen[pos] = '#'
             }
         }
-
         return [newClock, newX];
     }, [1, 1]);
 
     return screen;
 };
-
-const borderTop = `┌${'─'.repeat(40)}┐`;
-const borderBottom = `\n└${'─'.repeat(40)}┘`;
+const borderTop = '┌────────────────────────────────────────┐';
+const borderBottom = '\n└────────────────────────────────────────┘';
 
 const printScreen = screen => screen.reduce(([rows, line], pixel) => {
     const newLine = line.concat(pixel);
@@ -117,7 +91,7 @@ const printScreen = screen => screen.reduce(([rows, line], pixel) => {
 
 console.log('2) eg: ');
 console.log(printScreen(drawPixels(eg)));
-console.log('2) input: ');
+console.log('2) input: EGLHBLFJ');
 console.log(printScreen(drawPixels(input)));
 
 /*
