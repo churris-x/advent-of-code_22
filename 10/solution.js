@@ -93,9 +93,9 @@ const drawPixels = ops => {
 
         // check for cycle value and strength
         for (; clock < newClock; clock++) {
-            console.log(clock % 40, x, clock % 40 === x, clock % 40 === x + 1, clock % 40 === x - 1);
-            if (clock % 40 === x || clock % 40 === x + 1 || clock % 40 === x - 1 ) {
-                screen[clock -1] = '#'
+            const pos = clock -1;
+            if (pos % 40 === x || pos % 40 === x + 1 || pos % 40 === x - 1 ) {
+                screen[pos] = '#'
             }
         }
 
@@ -105,26 +105,25 @@ const drawPixels = ops => {
     return screen;
 };
 
-const borderTop = `┌${'─'.repeat(39)}┐`;
-const borderBottom = `\n└${'─'.repeat(39)}┘`;
+const borderTop = `┌${'─'.repeat(40)}┐`;
+const borderBottom = `\n└${'─'.repeat(40)}┘`;
 
 const printScreen = screen => screen.reduce(([rows, line], pixel) => {
     const newLine = line.concat(pixel);
 
-    if (newLine.length === 40) return [`${rows}\n${newLine}│`, '│'];
+    if (newLine.length === 40) return [`${rows}\n│${newLine}│`, ''];
     return [rows, newLine];
-}, [borderTop, '│'])[0].concat(borderBottom);
-
+}, [borderTop, ''])[0].concat(borderBottom);
 
 console.log('2) eg: ');
 console.log(printScreen(drawPixels(eg)));
-// console.log('2) input: ');
-// console.log(printScreen(drawPixels(input)));
+console.log('2) input: ');
+console.log(printScreen(drawPixels(input)));
 
 /*
 Wrong guesses:
 
 Correct:
     1) 13920
-    2) 
+    2) EGLHBLFJ
 */
