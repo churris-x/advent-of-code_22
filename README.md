@@ -32,7 +32,8 @@ Solutions to each day, in the following format:
 - [x] After first install (`$ npm start`) creates the `.env` file and prompt with the token `prompt | cat > .env`
 - [x] Create `util/` folder, move `template.js` and `fetchInput.js` to it
 - [x] Script that creates the next puzzle folder, fetches `input.txt`, and creates `solution.js` template
-- [ ] Make `newDay` script also `eg.txt`, `todo.md`
+- [ ] Making requests to the aoc servers should be throttled, once every 15 minutes (900s)
+- [ ] Make `newDay` script also fetch `todo.md`, coverting to md will be a challenge, maybe html first
 - [ ] Catch auth error from fetchInput when the cookie is outdated
 - [ ] Add flag to fetch command that loops through existing day folders
 - [ ] Create util that given a `async path => fs.readFile(require.resolve(path))` something like that with try catch
