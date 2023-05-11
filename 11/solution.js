@@ -14,15 +14,26 @@ const input = fs.readFileSync(require.resolve('./input.txt')).toString().slice(0
 
 */
 
-
 const getItems = state => state
     .split('\n\n')
     .map(item => item
         .split('\n')[1]
         .split(':')[1]
+        .split(',')
+        .map( i => Number(i))
     )
 
+
+const moveItem = (monkeys, from, to, itemIndex = 0) => monkeys
+    .map((monkey, index) => {
+        if (index === from) return monkey.filter(i => i !== monkeys[from][itemIndex]);
+        if (index === to) return [...monkey, monkeys[from][itemIndex]];
+        return monkey;
+    });
+
+
 console.log('1) eg: ', getItems(eg));
+console.log('1) eg: ', moveItem(getItems(eg), 0, 3));
 // console.log('1) input: ', placeholder(input));
 
 // Part 2 ---------------------------------------------------------------------
