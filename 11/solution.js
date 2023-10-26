@@ -27,31 +27,44 @@ const input = fs.readFileSync(require.resolve('./input.txt')).toString().slice(0
 */
 
 const getItems = state => state
-    .split('\n\n')           // separate each monkey
+    .split('\n\n')                   // separate each monkey
     .map(item => item
-        .split('\n')[1]      // get the second line
-        .split(':')[1]       // get list of numbers
-        .split(',')          // create array
-        .map(i => Number(i)) // parse each number
+        .split('\n')[1]              // get the second line
+        .split(':')[1]               // get list of numbers
+        .split(',')                  // create array
+        .map(i => Number(i))         // parse each number
     )
 
 const getOperations = state => state
     .split('\n\n')
     .map(item => item
-        .split('\n')[2]      // get the third line
-        .split('=')[1]       // get the function
+        .split('\n')[2]              // get the third line
+        .split('=')[1]               // get the function
     )
     .map(i => new Function('old', `return ${i}`))
 
 const getTests = state => state
     .split('\n\n')
-    .map(item => item
-        .split('\n')[3]      // get the fourth line
-        .split('by')[1]      // get the divisor
-    )                        // test if input is divisible by number
-    .map(i => new Function('number', `return number % ${i} === 0`))
+    .map(item => ([
+        item                         // divisor
+            .split('\n')[3]
+            .split('by')[1],
+        item                         // if true monkey
+            .split('\n')[4]
+            .split('monkey')[1],
+        item                         // if false monkey
+            .split('\n')[5]
+            .split('monkey')[1],
+        ])
+    )
+    .map(i => new Function(          // if input is divisible, pass to monkey
+        'number',
+        `return number % ${i[0]} === 0 ? ${i[1]} : ${i[2]}`
+    ));
 
 // ----------------------------------------------------------------------------
+
+const loseWorry = item => Math.floor(item / 3);
 
 const moveItem = (monkeys, from, to, itemIndex = 0) => monkeys
     .map((monkey, index) => {
