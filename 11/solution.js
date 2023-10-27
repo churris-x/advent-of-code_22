@@ -63,6 +63,12 @@ const getTests = state => state
     ));
 
 // ----------------------------------------------------------------------------
+/*
+    Ok, now with the getters, the question is how to implement turns and rounds
+    I'll need to get clever with implementing the stacks of items
+
+    for loop until 20 rounds
+*/
 
 const loseWorry = item => Math.floor(item / 3);
 
@@ -73,17 +79,48 @@ const moveItem = (monkeys, from, to, itemIndex = 0) => monkeys
         return monkey;
     });
 
+const monkeyThrow = ({items = [], monkeyIndex = 0, round = 0}) => {
 
+    if (round >= 20) return items;
+
+    const monkey = items[monkeyIndex];
+
+    if (monkey.length) {
+        console.log(monkey, 'still have items!');
+
+        const to = tests[monkeyIndex](monkey[0]);
+
+
+        const newItems = moveItem(items, monkeyIndex, to);
+
+        return monkeyThrow({
+            items: newItems,
+            monkeyIndex: (monkeyIndex + 1) % items.length,
+            round: monkeyIndex === items.length -1 ? round + 1 : round,
+        });
+
+    } else console.log(monkey, 'no more items!');
+
+    return monkeyThrow({
+        items: items,
+        monkeyIndex: (monkeyIndex + 1) % items.length,
+        round: monkeyIndex === items.length -1 ? round + 1 : round,
+    });
+}
 
 const items = getItems(eg);
 const operations = getOperations(eg);
 const tests = getTests(eg);
 
 
-// console.log('1) eg: ', getItems(eg));
+console.log('1) eg: ', getItems(eg));
+console.log('1) eg: ', monkeyThrow({ items }));
 // console.log('1) eg: ', moveItem(getItems(eg), 0, 3));
-
-console.log('1) eg: ', [items, operations.map(i => i.toString()), tests.map(i => i.toString())]);
+// console.log('1) eg: ', [
+//     items,
+//     operations.map(i => i.toString()),
+//     tests.map(i => i.toString())
+// ]);
 
 // console.log('1) input: ', placeholder(input));
 
