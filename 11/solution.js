@@ -86,23 +86,28 @@ const monkeyThrow = ({items = [], monkeyIndex = 0, round = 0}) => {
     const monkey = items[monkeyIndex];
 
     if (monkey.length) {
-        console.log(monkeyIndex, monkey, 'still have items!');
-
-        const to = tests[monkeyIndex](monkey[0]);      // test item with monkey test, return to index
+        // console.log(monkeyIndex, monkey);
 
         const item = operations[monkeyIndex](monkey[0]);  // apply operation to item
+
+        // console.log(`worry level goes from ${monkey[0]} to ${item}`);
+        // console.log(`Monkey gets bored with item. Worry level is divided by 3 to ${loseWorry(item)}`);
+        const to = tests[monkeyIndex](loseWorry(item));      // test item with monkey test, return to index
+        // console.log(`Item with worry level ${loseWorry(item)} is thrown to monkey ${to}`);
+
 
         const newItems = moveItem(items, monkeyIndex, to, 0, loseWorry(item));
 
         return monkeyThrow({
             items: newItems,
             monkeyIndex,
-            round: monkeyIndex === items.length -1 ? round + 1 : round,
+            round,
         });
 
     }
 
-    console.log(monkeyIndex, monkey, 'no more items!');
+    // console.log(monkeyIndex, monkey, 'no more items!');
+    // if (monkeyIndex === items.length -1) console.log(round, items);
 
     return monkeyThrow({
         items: items,
@@ -115,8 +120,8 @@ const items = getItems(eg);
 const operations = getOperations(eg);
 const tests = getTests(eg);
 
-
 console.log('1) eg: ', getItems(eg));
+// console.log('1) eg: ','\n');
 console.log('1) eg: ', monkeyThrow({ items }));
 // console.log('1) eg: ', moveItem(getItems(eg), 0, 3));
 // console.log('1) eg: ', [
