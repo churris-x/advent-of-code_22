@@ -72,10 +72,10 @@ const getTests = state => state
 
 const loseWorry = item => Math.floor(item / 3);
 
-const moveItem = (monkeys, from, to, itemIndex = 0) => monkeys
+const moveItem = (monkeys, from, to, itemIndex = 0, item) => monkeys
     .map((monkey, index) => {
         if (index === from) return monkey.filter(i => i !== monkeys[from][itemIndex]);
-        if (index === to) return [...monkey, monkeys[from][itemIndex]];
+        if (index === to) return [...monkey, item ?? monkeys[from][itemIndex]];
         return monkey;
     });
 
@@ -86,20 +86,23 @@ const monkeyThrow = ({items = [], monkeyIndex = 0, round = 0}) => {
     const monkey = items[monkeyIndex];
 
     if (monkey.length) {
-        console.log(monkey, 'still have items!');
+        console.log(monkeyIndex, monkey, 'still have items!');
 
-        const to = tests[monkeyIndex](monkey[0]);
+        const to = tests[monkeyIndex](monkey[0]);      // test item with monkey test, return to index
 
+        const item = operations[monkeyIndex](monkey[0]);  // apply operation to item
 
-        const newItems = moveItem(items, monkeyIndex, to);
+        const newItems = moveItem(items, monkeyIndex, to, 0, loseWorry(item));
 
         return monkeyThrow({
             items: newItems,
-            monkeyIndex: (monkeyIndex + 1) % items.length,
+            monkeyIndex,
             round: monkeyIndex === items.length -1 ? round + 1 : round,
         });
 
-    } else console.log(monkey, 'no more items!');
+    }
+
+    console.log(monkeyIndex, monkey, 'no more items!');
 
     return monkeyThrow({
         items: items,
