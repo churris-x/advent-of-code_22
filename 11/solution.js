@@ -88,6 +88,8 @@ const monkeyThrow = ({items = [], monkeyIndex = 0, round = 0}) => {
     if (monkey.length) {
         // console.log(monkeyIndex, monkey);
 
+        inspections[monkeyIndex]++
+
         const item = operations[monkeyIndex](monkey[0]);  // apply operation to item
 
         // console.log(`worry level goes from ${monkey[0]} to ${item}`);
@@ -116,13 +118,27 @@ const monkeyThrow = ({items = [], monkeyIndex = 0, round = 0}) => {
     });
 }
 
+// TODO(Fran): Make this work in a functional way
+// const getInspections = items => {
+//     const inspections = items.map(i => 0);
+//
+//     monkeyThrow({items});
+//
+//     return inspections;
+// }
+
 const items = getItems(eg);
 const operations = getOperations(eg);
 const tests = getTests(eg);
 
+const inspections = items.map(i => 0);
+
 console.log('1) eg: ', getItems(eg));
 // console.log('1) eg: ','\n');
 console.log('1) eg: ', monkeyThrow({ items }));
+console.log('1) eg: ',
+    inspections.sort().reduce((product, amount, index) => index < 2 ? product * amount : product)
+);
 // console.log('1) eg: ', moveItem(getItems(eg), 0, 3));
 // console.log('1) eg: ', [
 //     items,
