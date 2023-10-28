@@ -79,16 +79,19 @@ const moveItem = (monkeys, from, to, itemIndex = 0, item) => monkeys
         return monkey;
     });
 
-const monkeyThrow = ({items = [], monkeyIndex = 0, round = 0}) => {
+const monkeyThrow = ({items = [], monkeyIndex = 0, round = 0, inspections}) => {
 
-    if (round >= 20) return items;
+    if (round >= 20) return {items, inspections};
 
     const monkey = items[monkeyIndex];
 
     if (monkey.length) {
         // console.log(monkeyIndex, monkey);
 
-        inspections[monkeyIndex]++
+        // inspections[monkeyIndex]++
+        const newInspections = inspections
+            ? inspections.map((i, index) => index === monkeyIndex ? i + 1 : i)
+            : items.map((i, index) => index === monkeyIndex ? 0 + 1 : 0);
 
         const item = operations[monkeyIndex](monkey[0]);  // apply operation to item
 
@@ -104,6 +107,7 @@ const monkeyThrow = ({items = [], monkeyIndex = 0, round = 0}) => {
             items: newItems,
             monkeyIndex,
             round,
+            inspections: newInspections,
         });
 
     }
@@ -115,6 +119,7 @@ const monkeyThrow = ({items = [], monkeyIndex = 0, round = 0}) => {
         items: items,
         monkeyIndex: (monkeyIndex + 1) % items.length,
         round: monkeyIndex === items.length -1 ? round + 1 : round,
+        inspections,
     });
 }
 
@@ -145,6 +150,8 @@ console.log('1) eg: ',
 //     operations.map(i => i.toString()),
 //     tests.map(i => i.toString())
 // ]);
+
+// js pass something to last paramenter? log = true?
 
 // console.log('1) input: ', placeholder(input));
 
