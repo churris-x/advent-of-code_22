@@ -22,8 +22,6 @@ const input = fs.readFileSync(require.resolve('./input.txt')).toString().slice(0
     items = [[], [], [], []]
     operations = [()=>{},()=>{},()=>{},()=>{}]
     tests = [()=>{},()=>{},()=>{},()=>{}]
-
-
 */
 
 const getItems = state => state
@@ -41,20 +39,23 @@ const getOperations = state => state
         .split('\n')[2]              // get the third line
         .split('=')[1]               // get the function
     )
-    .map(i => new Function('old', `return ${i}`))
+    .map(i => new Function('old', `return ${i.trim()}`))
 
 const getTests = state => state
     .split('\n\n')
     .map(item => ([
         item                         // divisor
             .split('\n')[3]
-            .split('by')[1],
+            .split('by')[1]
+            .trim(),
         item                         // if true monkey
             .split('\n')[4]
-            .split('monkey')[1],
+            .split('monkey')[1]
+            .trim(),
         item                         // if false monkey
             .split('\n')[5]
-            .split('monkey')[1],
+            .split('monkey')[1]
+            .trim(),
         ])
     )
     .map(i => new Function(          // if input is divisible, pass to monkey
@@ -74,24 +75,21 @@ const loseWorry = item => Math.floor(item / 3);
 
 const moveItem = (monkeys, from, to, itemIndex = 0, item) => monkeys
     .map((monkey, index) => {
-        if (index === from) return monkey.filter(i => i !== monkeys[from][itemIndex]);
+        if (index === from) return monkey.filter((item, i) => i !== 0);
         if (index === to) return [...monkey, item ?? monkeys[from][itemIndex]];
         return monkey;
     });
 
-const monkeyThrow = ({items = [], monkeyIndex = 0, round = 0, inspections}) => {
+const monkeyThrow = ({items = [], monkeyIndex = 0, round = 0}) => {
 
-    if (round >= 20) return {items, inspections};
+    if (round >= 20) return items;
 
     const monkey = items[monkeyIndex];
 
     if (monkey.length) {
         // console.log(monkeyIndex, monkey);
 
-        // inspections[monkeyIndex]++
-        const newInspections = inspections
-            ? inspections.map((i, index) => index === monkeyIndex ? i + 1 : i)
-            : items.map((i, index) => index === monkeyIndex ? 0 + 1 : 0);
+        inspections[monkeyIndex]++
 
         const item = operations[monkeyIndex](monkey[0]);  // apply operation to item
 
@@ -103,25 +101,43 @@ const monkeyThrow = ({items = [], monkeyIndex = 0, round = 0, inspections}) => {
 
         const newItems = moveItem(items, monkeyIndex, to, 0, loseWorry(item));
 
+        const amountItems = items.reduce((sum, monkey) => sum + monkey.reduce((sum, items) => sum + 1, 0), 0)
+        const amountNewItems = newItems.reduce((sum, monkey) => sum + monkey.reduce((sum, items) => sum + 1, 0), 0)
+
+        if (amountItems !== amountNewItems){
+            console.log({monkeyIndex, monkey});
+            console.log(
+                items.reduce((sum, monkey) => sum + monkey.reduce((sum, items) => sum + 1, 0), 0),
+                newItems.reduce((sum, monkey) => sum + monkey.reduce((sum, items) => sum + 1, 0), 0)
+            );
+        }
+
+
         return monkeyThrow({
             items: newItems,
             monkeyIndex,
             round,
-            inspections: newInspections,
         });
 
     }
 
     // console.log(monkeyIndex, monkey, 'no more items!');
-    // if (monkeyIndex === items.length -1) console.log(round, items);
+    if (monkeyIndex === items.length -1) console.log(
+        round,
+        items.map((i, index)=> ({[index]: i.length})),
+        items.reduce((sum, monkey) => sum + monkey.reduce((sum, items) => sum + 1, 0), 0)
+    );
 
     return monkeyThrow({
         items: items,
         monkeyIndex: (monkeyIndex + 1) % items.length,
         round: monkeyIndex === items.length -1 ? round + 1 : round,
-        inspections,
     });
 }
+
+const getMonkeyBusiness = inspections => inspections
+    .sort((a, b) => b - a)
+    .reduce((product, amount, index) => index < 2 ? product * amount : product)
 
 // TODO(Fran): Make this work in a functional way
 // const getInspections = items => {
@@ -132,18 +148,21 @@ const monkeyThrow = ({items = [], monkeyIndex = 0, round = 0, inspections}) => {
 //     return inspections;
 // }
 
-const items = getItems(eg);
-const operations = getOperations(eg);
-const tests = getTests(eg);
+const items = getItems(input);
+const operations = getOperations(input);
+const tests = getTests(input);
 
 const inspections = items.map(i => 0);
 
-console.log('1) eg: ', getItems(eg));
+// console.log('1) eg: ', getItems(input));
+// console.log('1) eg: ', getOperations(input).map(i => i.toString()));
+// console.log('1) eg: ', getTests(input).map(i => i.toString()));
 // console.log('1) eg: ','\n');
 console.log('1) eg: ', monkeyThrow({ items }));
-console.log('1) eg: ',
-    inspections.sort().reduce((product, amount, index) => index < 2 ? product * amount : product)
-);
+console.log('1) eg: ', inspections);
+console.log('1) eg: ', getMonkeyBusiness(inspections));
+
+
 // console.log('1) eg: ', moveItem(getItems(eg), 0, 3));
 // console.log('1) eg: ', [
 //     items,
@@ -164,7 +183,8 @@ console.log('1) eg: ',
 
 /*
 Wrong guesses:
-
+    1) 1819 too low
+    1) 6321 too low
 Correct:
     1) 
     2) 
