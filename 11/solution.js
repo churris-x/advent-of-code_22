@@ -22,6 +22,8 @@ const input = fs.readFileSync(require.resolve('./input.txt')).toString().slice(0
     items = [[], [], [], []]
     operations = [()=>{},()=>{},()=>{},()=>{}]
     tests = [()=>{},()=>{},()=>{},()=>{}]
+
+    jesus if this is part one I'm scared for part 2
 */
 
 const getItems = state => state
@@ -64,74 +66,57 @@ const getTests = state => state
     ));
 
 // ----------------------------------------------------------------------------
-/*
-    Ok, now with the getters, the question is how to implement turns and rounds
-    I'll need to get clever with implementing the stacks of items
-
-    for loop until 20 rounds
-*/
 
 const loseWorry = item => Math.floor(item / 3);
 
 const moveItem = (monkeys, from, to, itemIndex = 0, item) => monkeys
     .map((monkey, index) => {
-        if (index === from) return monkey.filter((item, i) => i !== 0);
+        if (index === from) return monkey.filter((item, i) => i !== 0); // has to be first item
         if (index === to) return [...monkey, item ?? monkeys[from][itemIndex]];
         return monkey;
     });
 
-const monkeyThrow = ({items = [], monkeyIndex = 0, round = 0}) => {
+const monkeyThrow = ({
+    items = [],
+    monkeyIndex = 0,
+    round = 0,
+    operations = [],
+    tests = [],
+    inspections = []
+}) => {
 
-    if (round >= 20) return items;
+    if (round >= 20) return { items, inspections };
 
     const monkey = items[monkeyIndex];
 
     if (monkey.length) {
-        // console.log(monkeyIndex, monkey);
-
-        inspections[monkeyIndex]++
+        const newInspections = inspections.map(           // count inspection
+            (m, i) => i === monkeyIndex ? m + 1: m
+        )
 
         const item = operations[monkeyIndex](monkey[0]);  // apply operation to item
 
-        // console.log(`worry level goes from ${monkey[0]} to ${item}`);
-        // console.log(`Monkey gets bored with item. Worry level is divided by 3 to ${loseWorry(item)}`);
-        const to = tests[monkeyIndex](loseWorry(item));      // test item with monkey test, return to index
-        // console.log(`Item with worry level ${loseWorry(item)} is thrown to monkey ${to}`);
-
+        const to = tests[monkeyIndex](loseWorry(item));   // test item with monkey test, return to index
 
         const newItems = moveItem(items, monkeyIndex, to, 0, loseWorry(item));
-
-        const amountItems = items.reduce((sum, monkey) => sum + monkey.reduce((sum, items) => sum + 1, 0), 0)
-        const amountNewItems = newItems.reduce((sum, monkey) => sum + monkey.reduce((sum, items) => sum + 1, 0), 0)
-
-        if (amountItems !== amountNewItems){
-            console.log({monkeyIndex, monkey});
-            console.log(
-                items.reduce((sum, monkey) => sum + monkey.reduce((sum, items) => sum + 1, 0), 0),
-                newItems.reduce((sum, monkey) => sum + monkey.reduce((sum, items) => sum + 1, 0), 0)
-            );
-        }
-
 
         return monkeyThrow({
             items: newItems,
             monkeyIndex,
             round,
+            operations,
+            tests,
+            inspections: newInspections,
         });
-
     }
 
-    // console.log(monkeyIndex, monkey, 'no more items!');
-    if (monkeyIndex === items.length -1) console.log(
-        round,
-        items.map((i, index)=> ({[index]: i.length})),
-        items.reduce((sum, monkey) => sum + monkey.reduce((sum, items) => sum + 1, 0), 0)
-    );
-
     return monkeyThrow({
-        items: items,
+        items,
         monkeyIndex: (monkeyIndex + 1) % items.length,
         round: monkeyIndex === items.length -1 ? round + 1 : round,
+        operations,
+        tests,
+        inspections,
     });
 }
 
@@ -139,40 +124,21 @@ const getMonkeyBusiness = inspections => inspections
     .sort((a, b) => b - a)
     .reduce((product, amount, index) => index < 2 ? product * amount : product)
 
-// TODO(Fran): Make this work in a functional way
-// const getInspections = items => {
-//     const inspections = items.map(i => 0);
-//
-//     monkeyThrow({items});
-//
-//     return inspections;
-// }
+const getArgs = (input) => ({
+    items: getItems(input),
+    operations: getOperations(input),
+    tests: getTests(input),
+    inspections: getItems(input).map(i => 0)
+});
 
-const items = getItems(input);
-const operations = getOperations(input);
-const tests = getTests(input);
+console.log('1) eg: ', monkeyThrow( getArgs(eg) ));
+console.log('1) eg: ', getMonkeyBusiness( monkeyThrow( getArgs(eg) )?.inspections ));
 
-const inspections = items.map(i => 0);
+console.log('1) input: ', monkeyThrow( getArgs(input) ));
+console.log('1) input: ', getMonkeyBusiness(monkeyThrow( getArgs(input) )?.inspections ));
 
-// console.log('1) eg: ', getItems(input));
-// console.log('1) eg: ', getOperations(input).map(i => i.toString()));
-// console.log('1) eg: ', getTests(input).map(i => i.toString()));
-// console.log('1) eg: ','\n');
-console.log('1) eg: ', monkeyThrow({ items }));
-console.log('1) eg: ', inspections);
-console.log('1) eg: ', getMonkeyBusiness(inspections));
-
-
-// console.log('1) eg: ', moveItem(getItems(eg), 0, 3));
-// console.log('1) eg: ', [
-//     items,
-//     operations.map(i => i.toString()),
-//     tests.map(i => i.toString())
-// ]);
-
-// js pass something to last paramenter? log = true?
-
-// console.log('1) input: ', placeholder(input));
+// eg:     10605
+// input: 110888
 
 // Part 2 ---------------------------------------------------------------------
 
@@ -186,6 +152,6 @@ Wrong guesses:
     1) 1819 too low
     1) 6321 too low
 Correct:
-    1) 
+    1) 110888
     2) 
 */
